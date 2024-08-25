@@ -54,7 +54,7 @@ window.onload = async function() { // Torne a função assíncrona
                         console.log('Resposta recebida:', result);
 
                         // Insere o conteúdo retornado da API na área designada
-                        const conteudoArea = document.querySelector('.scrollspy-item .mt-4.p-5.bg-dark.text-white.rounded');
+                        const conteudoArea = document.querySelector('.scrollspy-item .mt-4.p-5.text-white.rounded');
                         conteudoArea.innerHTML = ''; // Limpa o conteúdo anterior
                         conteudoArea.innerHTML = `<pre><code>${result.scriptProfessor}</code></pre>`; // Formata o conteúdo como código
                     } else {

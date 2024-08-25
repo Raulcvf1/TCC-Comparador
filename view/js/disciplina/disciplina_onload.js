@@ -123,7 +123,7 @@ window.onload = function() {
         localStorage.setItem("jsonAtividade", JSON.stringify(atividadeInfo));
     
         // Redireciona para a página "disciplina.html"
-        window.location.href = "atividade.html";
+        window.location.href = "disciplinaNew.html";
     }
 
 

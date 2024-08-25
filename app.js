@@ -57,10 +57,7 @@ app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
     console.log(`http://localhost:${PORT}/`)
     console.log(`http://localhost:${PORT}/new/index.html`)
-    console.log(`http://localhost:${PORT}/index.html`)
+    console.log(`http://localhost:${PORT}/new/login.html`)
     console.log(`http://localhost:${PORT}/login.html`)
     console.log(`http://localhost:${PORT}/loginAluno.html`)
-    console.log(`http://localhost:${PORT}/home.html`)
-    console.log(`http://localhost:${PORT}/disciplina.html`)
-    console.log(`http://localhost:${PORT}/teste.html`)
 });
