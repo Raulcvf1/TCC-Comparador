@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/theme.js"></script>
+  <link rel="stylesheet" href="css/timePicker.css">
+  <style>
+    body {
+      transition: background-color 0.3s, color 0.3s;
+    }
+    .dark-mode {
+      background-color: #333;
+      /*color: #fff;*/
+    }
+    .light-mode {
+      background-color: #fff;
+      /*color: #000;*/
+    }
+    .sticky {
+      position: -webkit-sticky; /* Safari */
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    .fixed-col {
+      position: fixed;
+      top: 70px; /* altura da navbar */
+      height: calc(100vh - 70px); /* altura total menos a altura da navbar */
+      overflow-y: auto;
+    }
+    .fixed-col-left {
+      left: 0;
+      width: 25%;
+    }
+    .fixed-col-right {
+      right: 0;
+      width: 25%;
+    }
+    .main-content {
+      margin-left: 25%;
+      margin-right: 25%;
+    }
+  </style>
+</head>
+<body class="dark-mode" data-bs-spy="scroll" data-bs-target="#list-example" data-bs-offset="0" tabindex="0">
+
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark sticky">
+  <div class="container-fluid">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="navbar-brand" href="#">
+          <img src="img/univap.png" alt="Avatar Logo" style="width:40px;" class="rounded-pill">
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="home.html">Home</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" href="disciplina.html">Disciplinas</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Teste</a>
+      </li>
+    </ul>
+    <div class="justify-content-end text-white">
+      <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" id="mySwitch" name="darkmode" value="yes" checked>
+        <label class="form-check-label" for="mySwitch" id="lblTheme">Modo Escuro</label>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-8">
+      <div class="row">
+        <div class="col">
+          <div class="mt-4 p-5 bg-secondary text-white rounded">
+            <button type="button" class="btn btn-primary mb-4">
+              <p class="h1" id="lblNomeDisciplina"></p>
+            </button>
+            <div class="d-flex w-100">
+              <p class="h2 me-2" id="lblCodeDisciplina"></p>
+              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalCode">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrows-angle-expand" viewBox="0 0 16 16">
+                  <path fill-rule="evenodd" d="M5.828 10.172a.5.5 0 0 0-.707 0l-4.096 4.096V11.5a.5.5 0 0 0-1 0v3.975a.5.5 0 0 0 .5.5H4.5a.5.5 0 0 0 0-1H1.732l4.096-4.096a.5.5 0 0 0 0-.707m4.344-4.344a.5.5 0 0 0 .707 0l4.096-4.096V4.5a.5.5 0 1 0 1 0V.525a.5.5 0 0 0-.5-.5H11.5a.5.5 0 0 0 0 1h2.768l-4.096 4.096a.5.5 0 0 0 0 .707"/>
+                </svg>
+              </button>
+            </div>
+            <p>Clique abaixo para editar ou excluir a disciplina</p>
+            <div class="btn-group d-flex w-100">
+              <button type="button" class="btn btn-warning w-50">Editar</button>
+              <button type="button" class="btn btn-danger w-50">Excluir</button>
+            </div>
+          </div>                
+        </div>
+        <div class="col">
+          <div class="mt-4 p-5 bg-secondary text-white rounded">
+            <h1>Atividades</h1>
+            <p>Clique abaixo para criar atividades e visualizar o desenvolvimento dos alunos. Para criar uma atividade é necessário somente um nome para ela, um horário para o início e fim da atividade e os arquivos para correção dos scripts</p>
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalAtividade">Criar Atividade</button>
+          </div>
+        </div>
+      </div>
+      <!-- GOSTARIA QUE AS JUMBOTRONS ENTRASSEM AQUI -->
+      <div id="jumbotrons-container"></div> <!-- Container para os jumbotrons -->
+    </div>
+    <div class="col-4">
+      <div class="mt-4 p-5 bg-secondary text-white rounded">
+        <p class="h2" id="lblAlunoDisciplina"></p>    
+        <table class="table table-dark table-hover">
+          <thead>
+            <tr>
+              <th>matricula</th>
+              <th>rg</th>
+              <th>nome</th>
+              <th>email</th>
+              <th></th><!-- ultima coluna da tabela -->
+            </tr>
+          </thead>
+          <tbody id="disciplina-aluno-tbody">
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL DA ATIVIDADE -->
+<div class="modal fade" id="modalAtividade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalAtividadeLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title" id="modalAtividadeLabel">Criação de Atividade</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <!-- Modal body -->
+      <div class="modal-body">
+        <div class="container-fluid">
+          <div class="input-group mt-3 mb-3">
+            <span class="input-group-text">Nome</span>
+            <input type="text" class="form-control" id="txtNomeAtividade" placeholder="Nome da Disciplina">
+          </div>
+          <form id="uploadForm">
+            <div class="mb-3">
+              <label for="formFileMultiple" class="form-label">Selecione os arquivos da atividade</label>
+              <input class="form-control" type="file" id="fileInput" multiple>
+            </div>
+          </form>
+        </div>
+      </div>
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-success" id="btnAtividade">Criar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL DO CODIGO -->
+<div class="modal fade" id="modalCode">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+          <!-- Modal Header -->
+          <div class="modal-header">
+              <h4 class="modal-title" style="color: black;">Código da Disciplina</h4>
+              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+
+          <!-- Modal body -->
+          <div class="modal-body">
+              <p class="display-1 text-center" id="lblCodeExpand" style="color: black;"></p>
+          </div>
+
+          <!-- Modal footer -->
+          <div class="modal-footer">
+          </div>
+      </div>
+  </div>
+</div>
+
+<br>
+
+<script type="text/javascript" src="js/disciplina/disciplina_onload.js"></script>
+<script type="text/javascript" src="js/disciplina/disciplina_expand.js"></script>
+<script type="text/javascript" src="js/disciplina/disciplina_modal.js"></script>
+<script type="text/javascript" src="js/disciplina/atividade.js"></script>
+</body>
+</html>

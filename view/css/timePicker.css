@@ -1,0 +1,48 @@
+.datetime-picker {
+    position: relative;
+    display: inline-block;
+  }
+
+  .datetime-picker input {
+    width: 100%;
+  }
+
+  .datetime-picker .calendar {
+    display: none;
+    position: absolute;
+    z-index: 1000;
+    background: #fff;
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+  }
+
+  .datetime-picker .calendar table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .datetime-picker .calendar th, .datetime-picker .calendar td {
+    text-align: center;
+    padding: 5px;
+    cursor: pointer;
+  }
+
+  .datetime-picker .calendar th {
+    background: #f8f9fa;
+  }
+
+  .datetime-picker .calendar td:hover {
+    background: #e9ecef;
+  }
+
+  .scrollspy-container {
+    position: relative;
+    height: 400px;
+    overflow: auto;
+  }
+
+  .scrollspy-item {
+    padding: 20px;
+    margin-bottom: 10px;
+  }

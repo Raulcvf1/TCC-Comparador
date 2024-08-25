@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Firebase Login</title>
+    <link rel="stylesheet" href="css/styleLogin.css">
+</head>
+<body class="dark-theme">
+    <div class="container">
+        <div class="card" id="login-card">
+            <h2>Login</h2>
+            <label for="login-email">E-mail:</label>
+            <input type="text" id="txtEmailLogin"><br>
+            <label for="login-senha">Senha:</label>
+            <input type="password" id="txtSenhaLogin"><br>
+            <button id="btnLogin">Entrar</button>
+            <p>Não tem uma conta? <a href="#" onclick="showRegister()">Cadastre-se</a></p>
+        </div>
+        <div class="card" id="register-card" style="display: none;">
+            <h2>Cadastro</h2>
+            <label for="register-email">Nome:</label>
+            <input type="text" id="txtNomeRegister"><br>
+            <label for="register-email">E-mail:</label>
+            <input type="text" id="txtEmailRegister"><br>
+            <label for="register-senha">Senha:</label>
+            <input type="password" id="txtSenhaRegister"><br>
+            <button id="btnRegister">Cadastrar</button>
+            <p>Já tem uma conta? <a href="#" onclick="showLogin()">Entrar</a></p>
+        </div>
+    </div>
+
+    <script type="module" src="js/login/login.js"></script>
+    <script type="module" src="js/login/register.js"></script>
+</body>
+</html>

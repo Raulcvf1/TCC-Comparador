@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Firebase Login</title>
+    <link rel="stylesheet" href="css/styleLogin.css">
+</head>
+<body class="dark-theme">
+    <div class="container">
+        <div class="card" id="login-card">
+            <h2>Login</h2>
+            <label for="login-email">E-mail:</label>
+            <input type="text" id="txtEmailLoginAluno"><br>
+            <label for="login-senha">Senha:</label>
+            <input type="password" id="txtSenhaLoginAluno"><br>
+            <button id="btnLoginAluno">Entrar</button>
+            <p>Não tem uma conta? <a href="#" onclick="showRegister()">Cadastre-se</a></p>
+        </div>
+        <div class="card" id="register-card" style="display: none;">
+            <h2>Cadastro</h2>
+            <label for="register-email">Matricula:</label>
+            <input type="text" id="txtMatriculaRegisterAluno"><br>
+            <label for="register-email">Rg:</label>
+            <input type="text" id="txtRgRegisterAluno"><br>
+            <label for="register-email">Nome:</label>
+            <input type="text" id="txtNomeRegisterAluno"><br>
+            <label for="register-email">E-mail:</label>
+            <input type="text" id="txtEmailRegisterAluno"><br>
+            <label for="register-senha">Senha:</label>
+            <input type="password" id="txtSenhaRegisterAluno"><br>
+            <button id="btnRegisterAluno">Cadastrar</button>
+            <p>Já tem uma conta? <a href="#" onclick="showLogin()">Entrar</a></p>
+        </div>
+    </div>
+
+    <script type="module" src="js/loginAluno/loginAluno.js"></script>
+    <script type="module" src="js/loginAluno/registerAluno.js"></script>
+</body>
+</html>
