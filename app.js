@@ -10,8 +10,6 @@ const rota_upload_input = require('./control/rota_upload_input');
 const rota_contar_arquivos = require('./control/rota_contar_arquivos')
 const rota_conteudo_input = require('./control/rota_conteudo_input');
 
-console.loq();
-
 //importa o driver do mysql
 const mysql = require('mysql');
 
