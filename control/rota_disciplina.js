@@ -180,7 +180,7 @@ module.exports = function (app, banco) {
 
     });
 
-        /*
+    /*
     get ID POR CODE UNICO
     */
     app.get("/disciplina/code/:codeunico/", (request, response) => {
@@ -224,9 +224,9 @@ module.exports = function (app, banco) {
 
 
     /*
-    get Disciplina Professor
+    get Disciplina Professor atual
     */
-    app.get("/disciplina/professor/:id/", (request, response) => {
+    app.get("/disciplina/professor/atual/:id/:ano", (request, response) => {
 
         const jwt = new JwtToken();
         const token = request.headers.authorization;
@@ -237,13 +237,62 @@ module.exports = function (app, banco) {
             const disciplina = new Disciplina(banco);
 
             const professor_registro = request.params.id;
+            const ano = request.params.ano;
 
             const professor = new Professor(banco);
             professor.setRegistro(professor_registro);
 
             disciplina.setProfessor(professor);
+            disciplina.setAno(ano);
 
-            disciplina.readDisciplinaProfessor()
+            disciplina.readDisciplinaProfessor_ano_atual()
+            .then((resultadosBanco) => {
+                const resposta = {
+                status: true,
+                msg: "executado com sucesso",
+                dados: resultadosBanco,
+                };
+                response.status(200).send(resposta);
+            })
+            .catch((erro) => {
+                const resposta = {
+                status: false,
+                msg: "erro ao executar",
+                codigo: "005",
+                dados: erro,
+                };
+                response.status(200).send(resposta);
+            });
+
+        }else{
+            return response.status(401).json({ message: "Token inválido ou não fornecido" });
+        }
+
+    });
+
+    /*
+    get Disciplina Professor antiga
+    */
+    app.get("/disciplina/professor/antigo/:id/:ano", (request, response) => {
+
+        const jwt = new JwtToken();
+        const token = request.headers.authorization;
+        const tokenValido = jwt.validarToken(token);
+
+        if (tokenValido.status == true) {
+
+            const disciplina = new Disciplina(banco);
+
+            const professor_registro = request.params.id;
+            const ano = request.params.ano;
+
+            const professor = new Professor(banco);
+            professor.setRegistro(professor_registro);
+
+            disciplina.setProfessor(professor);
+            disciplina.setAno(ano);
+
+            disciplina.readDisciplinaProfessor_ano_antigo()
             .then((resultadosBanco) => {
                 const resposta = {
                 status: true,
@@ -324,9 +373,10 @@ module.exports = function (app, banco) {
             const id = request.params.id;
             const nome = request.body.nome;
             const serie = request.body.serie;
-            const ano = new Date().getFullYear();
+            const ano = request.body.ano;
             const duplicado = request.body.duplicado;
             const linguagem = request.body.linguagem;
+            const code = request.body.code;
             const professor_registro = request.body.professor_registro;
 
             const disciplina = new Disciplina(banco);
@@ -337,6 +387,7 @@ module.exports = function (app, banco) {
             disciplina.setAno(ano);
             disciplina.setDuplicado(duplicado);
             disciplina.setLinguagem(linguagem);
+            disciplina.setCode(code);
 
             const professor = new Professor(banco);
             professor.setRegistro(professor_registro);

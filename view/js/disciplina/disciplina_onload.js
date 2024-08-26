@@ -2,6 +2,10 @@ window.onload = function() {
     // Recupera o objeto do localStorage
     var disciplina = JSON.parse(localStorage.getItem("jsonDisciplina"));
 
+    if (disciplina.ano != new Date().getFullYear()){
+        document.getElementById('btnCreateAtividade').disabled = true;
+    }
+
     // Verifica se o objeto foi encontrado e se possui o atributo nome
     if (disciplina && disciplina.nome) {
         // Atribui o nome do professor ao elemento <p> com id txtNome_onload
@@ -51,20 +55,6 @@ window.onload = function() {
             .catch((error) => {
                 console.error("Error:", error);
             });
-    }
-    
-    // Função para formatar a data e hora
-    function formatDateTime(dateTimeStr) {
-        const date = new Date(dateTimeStr);
-        const options = {
-            year: 'numeric', 
-            month: '2-digit', 
-            day: '2-digit', 
-            hour: '2-digit', 
-            minute: '2-digit', 
-            second: '2-digit'
-        };
-        return date.toLocaleString('pt-BR', options);
     }
 
     // Função para criar os jumbotrons das atividades
@@ -123,10 +113,8 @@ window.onload = function() {
         localStorage.setItem("jsonAtividade", JSON.stringify(atividadeInfo));
     
         // Redireciona para a página "disciplina.html"
-        window.location.href = "disciplinaNew.html";
+        window.location.href = "atividadeNew.html";
     }
-
-
 
     function fetch_get_selectDisciplinaAluno(id) {
         // Converte o objeto recebido em um texto json

@@ -85,14 +85,39 @@ module.exports = class Disciplina {
     return operacaoAssincrona;
   }
 
-  async readDisciplinaProfessor() {
+  async readDisciplinaProfessor_ano_atual() {
     const operacaoAssincrona = new Promise((resolve, reject) => {
       const professor = this.getProfessor();
       const professor_registro = professor.registro;
 
-      let params = [professor_registro];
+      const ano = this.getAno();
+
+      let params = [professor_registro, ano];
       
-      let SQL = "SELECT nome, serie, ano, duplicado, linguagem, codigo_unico FROM colegiosunivap.disciplina WHERE Professor_registro = ?;";
+      let SQL = "SELECT nome, serie, ano, duplicado, linguagem, codigo_unico FROM colegiosunivap.disciplina WHERE Professor_registro = ? AND ano = ?;";
+
+      this.banco.query(SQL, params, function (error, result) {
+        if (error) {
+          console.log(error);
+          reject(error);
+        } else {
+          resolve(result);
+        }
+      });
+    });
+    return operacaoAssincrona;
+  }
+
+  async readDisciplinaProfessor_ano_antigo() {
+    const operacaoAssincrona = new Promise((resolve, reject) => {
+      const professor = this.getProfessor();
+      const professor_registro = professor.registro;
+
+      const ano = this.getAno();
+
+      let params = [professor_registro, ano];
+      
+      let SQL = "SELECT nome, serie, ano, duplicado, linguagem, codigo_unico FROM colegiosunivap.disciplina WHERE Professor_registro = ? AND ano < ?;";
 
       this.banco.query(SQL, params, function (error, result) {
         if (error) {
