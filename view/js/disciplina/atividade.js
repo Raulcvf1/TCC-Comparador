@@ -1,93 +1,66 @@
-document.getElementById('btnAtividade').addEventListener('click', async function (e) {
-  e.preventDefault();
+const btnAtividade = document.getElementById("btnAtividade");
+const txtNomeAtividade = document.getElementById("txtNomeAtividade");
 
-  const fileInput = document.getElementById('fileInput');
-  const files = fileInput.files;
-  const formData = new FormData();
+btnAtividade.onclick = onclick_btnAtividade;
 
-  const txtNomeAtividade = document.getElementById("txtNomeAtividade");
+function onclick_btnAtividade() {
   const v_nome = txtNomeAtividade.value;
 
-  const professor = JSON.parse(localStorage.getItem("jsonProfessor"));
   var disciplina = JSON.parse(localStorage.getItem("jsonDisciplina"));
-
+      
   const objJson = {
-    nome: v_nome,
-    status: 0, // 0 = false | 1 = true
-    quantidade_exercicios: files.length,
-    Disciplina_idDisciplina: disciplina.idDisciplina,
-    professor_registro: professor.registro
+      nome: v_nome,
+      status: 0,
+      Disciplina_idDisciplina: disciplina.idDisciplina
   };
 
-  // Aguarde a execução da função e obtenha o ID retornado
-  const idAtividade = await fetch_post_createDisciplina(objJson);
+  fetch_post_createAtividade(objJson);
+}
 
-  // Continue com o resto do código após obter o ID
-  for (let i = 0; i < files.length; i++) {
-    const fileExt = files[i].name.split('.').pop(); // Pega a extensão do arquivo
-    formData.append('files', files[i], `questao${i + 1}.${fileExt}`);
-  }
-
-  formData.append('registro', professor.registro);
-  formData.append('idDisciplina', disciplina.idDisciplina); 
-  formData.append('idAtividade', idAtividade); 
-
-  try {
-    const response = await fetch('/uploadProfessor', {
-      method: 'POST',
-      body: formData
-    });
-
-    if (response.ok) {
-      console.log('Arquivos enviados com sucesso');
-      location.reload();
-    } else {
-      console.error('Erro ao enviar os arquivos');
-    }
-  } catch (error) {
-    console.error('Erro:', error);
-  }
-});
-
-// Função assíncrona para validar login
-async function fetch_post_createDisciplina(objJson) {
-  // Converte o objeto recebido em um texto json
+//função assincrona para validar login
+function fetch_post_createAtividade(objJson) {
+  //converte o objeto recebido em um texto json
   const stringJson = JSON.stringify(objJson);
 
-  // Determina a URI do serviço na API
+  //determina a uri do serviço na api
   const uri = "/atividade";
-
+  
   const token = localStorage.getItem("token");
   console.log(token);
 
-  try {
-    const response = await fetch(uri, {
-      method: "post",
-      body: stringJson,
-      headers: {
-        Accept: "application/json", // Aceita json como resposta da API
-        "Content-Type": "application/json", // Informa que irá enviar para API conteúdo em json
-        authorization: "bearer <" + token + ">", // Envia o token de autorização
-      },
-    });
+  const requisicao_assincrona = fetch(uri, {
+    method: "post",
+    body: stringJson,
+    headers: {
+      Accept: "application/json", //Aceita json como resposta da api
+      "Content-Type": "application/json", //Informa que irá enviar para api conteúdo em json
+      authorization: "bearer <" + token + ">", //não envia token pq ainda não está logado
+    },
+  });
 
-    const jsonResposta = await response.text();
-    // Mostra o conteúdo recebido da API no console do navegador
+  //caso seja retornada uma resposta da api, ela será processada abaixo
+  requisicao_assincrona.then((response) => {
+      return response.text();
+  }).then((jsonResposta) => {
+    //é execudado quando a api "js" responde.
+
+    //mostra o contúdo recebido da api no console do navegador.
     console.log("RECEBIDO:", jsonResposta);
 
-    // Converte a resposta da API para um objeto json
+    //converte a resposta da api para um objeto json.
     const objetoJson = JSON.parse(jsonResposta);
 
-    // Caso o status da resposta seja true, retorna o ID
+    //caso o status da resposta seja true entra no if
     if (objetoJson.status == true) {
-      console.log(objetoJson);
-      return objetoJson.dados.id;
+      location.reload();
     } else {
-      // Caso o status da resposta não seja true, escreve a mensagem que veio da API
+      //caso o status da resposta não sseja true
+      //escreve a mensagem que veio da api
       console.log(objetoJson.msg);
     }
-  } catch (error) {
+  });
+  //caso aconteça algum erro o catch é chamado e o erro é apresentado no console do navegador
+  requisicao_assincrona.catch((error) => {
     console.error("Error:", error);
-  }
-  return null; // Retorna null se algo deu errado
+  });
 }

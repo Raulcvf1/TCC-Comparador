@@ -4,7 +4,6 @@ module.exports = class Disciplina {
       this.idAtividade = null;
       this.nome = null;
       this.status = null;
-      this.quantidade = null;
       this.Disciplina = {
         idDisciplina: null,
       };
@@ -14,12 +13,11 @@ module.exports = class Disciplina {
       const operacaoAssincrona = new Promise((resolve, reject) => {
         const nome = this.getNome();
         const status = this.getStatus();
-        const quantidade = this.getQuantidade();
         const disciplina = this.getDisciplina();
         const Disciplina_idDisciplina = disciplina.idDisciplina;
   
-        let params = [nome, status, quantidade, Disciplina_idDisciplina];
-        let sql = "INSERT INTO colegiosunivap.atividade (nome, status, quantidade_exercicios, Disciplina_idDisciplina) VALUES (?, ?, ?, ?);";
+        let params = [nome, status, Disciplina_idDisciplina];
+        let sql = "INSERT INTO colegiosunivap.atividade (nome, status, Disciplina_idDisciplina) VALUES (?, ?, ?);";
 
         this.banco.query(sql, params, function (error, result) {
           if (error) {
@@ -38,9 +36,9 @@ module.exports = class Disciplina {
         let params = [id];
         let SQL = "";
         if (id == null) {
-          SQL = "SELECT nome, status, quantidade_exercicios FROM colegiosunivap.atividade;";
+          SQL = "SELECT nome, status FROM colegiosunivap.atividade;";
         } else {
-          SQL = "SELECT nome, status, quantidade_exercicios FROM colegiosunivap.atividade WHERE idAtividade = ?;";
+          SQL = "SELECT nome, status FROM colegiosunivap.atividade WHERE idAtividade = ?;";
         }
         this.banco.query(SQL, params, function (error, result) {
           if (error) {
@@ -62,7 +60,7 @@ module.exports = class Disciplina {
   
         let params = [Disciplina_idDisciplina];
         
-        let SQL = "SELECT idAtividade, nome, status, quantidade_exercicios FROM colegiosunivap.atividade WHERE Disciplina_idDisciplina = ?;";
+        let SQL = "SELECT idAtividade, nome, status FROM colegiosunivap.atividade WHERE Disciplina_idDisciplina = ?;";
   
         this.banco.query(SQL, params, function (error, result) {
           if (error) {
@@ -121,17 +119,15 @@ module.exports = class Disciplina {
   
     async update() {
       const operacaoAssincrona = new Promise((resolve, reject) => {
+        const idAtividade = this.getIdAtividade();
         const nome = this.getNome();
-        const descricao = this.getDescricao();
-        const horaInicio = this.getHorarioInicio();
-        const horaFim  = this.getHorarioFim();
-        const quantidade = this.getQuantidade();
+        const status = this.getStatus();
         const disciplina = this.getDisciplina();
         const Disciplina_idDisciplina = disciplina.idDisciplina;
   
-        const params = [nome, descricao, horaInicio, horaFim, quantidade, Disciplina_idDisciplina];
+        const params = [nome, status, Disciplina_idDisciplina, idAtividade];
   
-        let sql = "UPDATE colegiosunivap.atividade SET nome = ?, status = ?, quantidade_exercicios = ?, Disciplina_idDisciplina = ? WHERE idAtividade = ?;";
+        let sql = "UPDATE colegiosunivap.atividade SET nome = ?, status = ?, Disciplina_idDisciplina = ? WHERE idAtividade = ?;";
   
         this.banco.query(sql, params, function (error, result) {
           if (error) {
@@ -146,7 +142,7 @@ module.exports = class Disciplina {
   
     async delete() {
       const operacaoAssincrona = new Promise((resolve, reject) => {
-        const id = this.getIdDisciplina();
+        const id = this.getIdAtividade();
         let params = [id];
   
         let sql = "DELETE FROM colegiosunivap.atividade WHERE idAtividade = ?;";
@@ -161,8 +157,6 @@ module.exports = class Disciplina {
       });
       return operacaoAssincrona;
     }
-
-
   
     setIdAtividade(newIdAtividade) {
       this.idAtividade = newIdAtividade;
@@ -183,13 +177,6 @@ module.exports = class Disciplina {
     }
     getStatus(){
       return this.status;
-    }
-  
-    setQuantidade(newQuantidade){
-      this.quantidade = newQuantidade;
-    }
-    getQuantidade(){
-      return this.quantidade;
     }
   
     setDisciplina(newDisciplina) {

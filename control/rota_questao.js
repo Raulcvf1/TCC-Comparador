@@ -1,12 +1,12 @@
 //app e banco são recebidos quando fazemos a chamada
 
-const Atividade = require("../model/Atividade");
+const Questao = require("../model/Questao");
 
 // de rotas_funcionarios
 module.exports = function (app, banco) {
     const JwtToken = require("../model/jwtToken");
 
-    const Disciplina = require("../model/Disciplina");
+    const Atividade = require("../model/Atividade");
 
     const fs = require('fs');
     const path = require('path');
@@ -32,7 +32,7 @@ module.exports = function (app, banco) {
     /*
     CREATE
     */
-    app.post("/atividade", (request, response) => {
+    app.post("/questao", (request, response) => {
 
         const jwt = new JwtToken();
         const token = request.headers.authorization;
@@ -42,21 +42,20 @@ module.exports = function (app, banco) {
         if (tokenValido.status == true) {
 
             const nome = request.body.nome;
-            const status = request.body.status;
-            const Disciplina_idDisciplina = request.body.Disciplina_idDisciplina;
+            const path = request.body.path;
+            const Atividade_idAtividade = request.body.Atividade_idAtividade;
+
+            const questao = new Questao(banco);
+
+            questao.setNome(nome);
+            questao.setPath(path);
 
             const atividade = new Atividade(banco);
+            atividade.setIdAtividade(Atividade_idAtividade);
 
-            atividade.setNome(nome);
-            atividade.setStatus(status);
+            questao.setAtividade(atividade);
 
-            const disciplina = new Disciplina(banco);
-            disciplina.setIdDisciplina(Disciplina_idDisciplina);
-
-            atividade.setDisciplina(disciplina);
-
-            atividade.create()
-            .then((resultadosBanco) => {
+            questao.create().then((resultadosBanco) => {
 
                 const lastInsertId = resultadosBanco.insertId;
 
@@ -66,8 +65,8 @@ module.exports = function (app, banco) {
                 codigo: "004",
                 dados: {
                     id: lastInsertId,
-                    nome: atividade.getNome(),
-                    status: atividade.getStatus(),
+                    nome: questao.getNome(),
+                    path: questao.getPath()
                 },
                 };
                 response.status(200).send(resposta);
@@ -84,7 +83,7 @@ module.exports = function (app, banco) {
     /*
     get ALL
     */
-    app.get("/atividade", function (request, response) {
+    app.get("/questao", function (request, response) {
 
         const jwt = new JwtToken();
         const token = request.headers.authorization;
@@ -92,10 +91,10 @@ module.exports = function (app, banco) {
 
         if (tokenValido.status == true) {
 
-            const atividade = new Atividade(banco);
+            const questao = new Questao(banco);
 
-            atividade.read()
-            .then((resultadosBanco) => {
+            questao.read().then((resultadosBanco) => {
+
                 const resposta = {
                     status: true,
                     msg: "Executado com sucesso",
@@ -122,7 +121,7 @@ module.exports = function (app, banco) {
     /*
     get ID
     */
-    app.get("/atividade/:id/", (request, response) => {
+    app.get("/questao/:id/", (request, response) => {
 
         const jwt = new JwtToken();
         const token = request.headers.authorization;
@@ -130,14 +129,13 @@ module.exports = function (app, banco) {
 
         if (tokenValido.status == true) {
 
-            const atividade = new Atividade(banco);
+            const questao = new Questao(banco);
 
             const id = request.params.id;
 
-            atividade.setIdAtividade(id);
+            questao.setIdQuestao(id);
 
-            atividade.read()
-            .then((resultadosBanco) => {
+            questao.read().then((resultadosBanco) => {
                 const resposta = {
                 status: true,
                 msg: "executado com sucesso",
@@ -160,12 +158,11 @@ module.exports = function (app, banco) {
         }
 
     });
-    
+
     /*
-    get ATIVIDADE POR DISCIPLINA
+    get Questao Atividade
     */
-    
-    app.get("/atividade/disciplina/:id/", (request, response) => {
+    app.get("/questao/atividade/:id/", (request, response) => {
 
         const jwt = new JwtToken();
         const token = request.headers.authorization;
@@ -173,17 +170,17 @@ module.exports = function (app, banco) {
 
         if (tokenValido.status == true) {
 
-            const Disciplina_idDisciplina = request.params.id;
+            const questao = new Questao(banco);
+
+            const id = request.params.id;
 
             const atividade = new Atividade(banco);
 
-            const disciplina = new Disciplina(banco);
-            disciplina.setIdDisciplina(Disciplina_idDisciplina);
+            atividade.setIdAtividade(id)
 
-            atividade.setDisciplina(disciplina);
+            questao.setAtividade(atividade);
 
-            atividade.readAtividadeDisciplina()
-            .then((resultadosBanco) => {
+            questao.readQuestaoAtividade().then((resultadosBanco) => {
                 const resposta = {
                 status: true,
                 msg: "executado com sucesso",
@@ -206,107 +203,11 @@ module.exports = function (app, banco) {
         }
 
     });
-
-    
-
-    /*
-    get Disciplina Professor
-    */
-
-    /*
-    app.get("/disciplina/professor/:id/", (request, response) => {
-
-        const jwt = new JwtToken();
-        const token = request.headers.authorization;
-        const tokenValido = jwt.validarToken(token);
-
-        if (tokenValido.status == true) {
-
-            const disciplina = new Disciplina(banco);
-
-            const professor_registro = request.params.id;
-
-            const professor = new Professor(banco);
-            professor.setRegistro(professor_registro);
-
-            disciplina.setProfessor(professor);
-
-            disciplina.readDisciplinaProfessor()
-            .then((resultadosBanco) => {
-                const resposta = {
-                status: true,
-                msg: "executado com sucesso",
-                dados: resultadosBanco,
-                };
-                response.status(200).send(resposta);
-            })
-            .catch((erro) => {
-                const resposta = {
-                status: false,
-                msg: "erro ao executar",
-                codigo: "005",
-                dados: erro,
-                };
-                response.status(200).send(resposta);
-            });
-
-        }else{
-            return response.status(401).json({ message: "Token inválido ou não fornecido" });
-        }
-
-    });
-
-    */
-    /*
-    get Disciplina Aluno
-    */
-
-    /*
-    app.get("/disciplina/aluno/:id/", (request, response) => {
-
-        const jwt = new JwtToken();
-        const token = request.headers.authorization;
-        const tokenValido = jwt.validarToken(token);
-
-        if (tokenValido.status == true) {
-
-            const disciplina = new Disciplina(banco);
-
-            const idDisciplina = request.params.id;
-
-            disciplina.setIdDisciplina(idDisciplina);
-
-            disciplina.readDisciplinaAluno()
-            .then((resultadosBanco) => {
-                const resposta = {
-                status: true,
-                msg: "executado com sucesso",
-                dados: resultadosBanco,
-                };
-                response.status(200).send(resposta);
-            })
-            .catch((erro) => {
-                const resposta = {
-                status: false,
-                msg: "erro ao executar",
-                codigo: "005",
-                dados: erro,
-                };
-                response.status(200).send(resposta);
-            });
-
-        }else{
-            return response.status(401).json({ message: "Token inválido ou não fornecido" });
-        }
-
-    });
-
-    */
 
     /*
     update
     */
-    app.put("/atividade/:id", (request, response) => {
+    app.put("/questao/:id", (request, response) => {
 
         const jwt = new JwtToken();
         const token = request.headers.authorization;
@@ -316,30 +217,30 @@ module.exports = function (app, banco) {
 
             const id = request.params.id;
             const nome = request.body.nome;
-            const status = request.body.status;
-            const Disciplina_idDisciplina = request.body.Disciplina_idDisciplina;
+            const path = request.body.path;
+            const Atividade_idAtividade = request.body.Atividade_idAtividade;
+
+            const questao = new Questao(banco);
+
+            questao.setIdQuestao(id);
+            questao.setNome(nome);
+            questao.setPath(path);
 
             const atividade = new Atividade(banco);
+            atividade.setIdAtividade(Atividade_idAtividade);
 
-            atividade.setIdAtividade(id);
-            atividade.setNome(nome);
-            atividade.setStatus(status);
+            questao.setAtividade(atividade);
 
-            const disciplina = new Disciplina(banco);
-            disciplina.setIdDisciplina(Disciplina_idDisciplina);
+            questao.update().then((resultadosBanco) => {
 
-            atividade.setDisciplina(disciplina);
-
-            atividade.update()
-            .then((resultadosBanco) => {
                 const resposta = {
                 status: true,
                 msg: "Executado com sucesso",
                 codigo: "004",
                 dados: {
-                    id: atividade.getIdAtividade(),
-                    nome: atividade.getNome(),
-                    status: atividade.getStatus()
+                    id: questao.getIdQuestao(),
+                    nome: questao.getNome(),
+                    path: questao.getPath()
                 },
                 };
                 response.status(200).send(resposta);
@@ -356,7 +257,7 @@ module.exports = function (app, banco) {
     /*
     delete
     */
-    app.delete("/atividade/:id", (request, response) => {
+    app.delete("/questao/:id", (request, response) => {
 
         const jwt = new JwtToken();
         const token = request.headers.authorization;
@@ -366,18 +267,18 @@ module.exports = function (app, banco) {
 
             const id = request.params.id;
 
-            const atividade = new Atividade(banco);
+            const questao = new Questao(banco);
 
-            atividade.setIdAtividade(id);
+            questao.setIdQuestao(id);
 
-            atividade.delete()
-            .then((resultadosBanco) => {
+            questao.delete().then((resultadosBanco) => {
+
                 const resposta = {
                 status: true,
                 msg: "Excluido com sucesso",
                 codigo: "004",
                 dados: {
-                    registro: atividade.getIdAtividade(),
+                    registro: questao.getIdQuestao(),
                 },
                 };
                 response.status(200).send(resposta);

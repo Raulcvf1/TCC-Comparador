@@ -88,14 +88,14 @@
                     </button>
 
                     <div class="btn-group d-flex w-100 mt-3">
-                        <button type="button" class="btn btn-warning mb-4 w-50" data-bs-toggle="editar" title="Editar Atividade">
+                        <button type="button" class="btn btn-warning mb-4 w-50" data-bs-toggle="modal" data-bs-toggle="editar" title="Editar Atividade" data-bs-target="#modalAtividadePut">
                             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16" >
                                 <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
                                 <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
                             </svg>
                         </button>
 
-                        <button type="button" class="btn btn-danger mb-4 w-50" data-bs-toggle="excluir" title="Excluir Atividade">
+                        <button type="button" class="btn btn-danger mb-4 w-50" data-bs-toggle="modal" data-bs-toggle="excluir" title="Excluir Atividade" data-bs-target="#modalAtividadeDelete">
                             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
                                 <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
                                 <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
@@ -111,10 +111,11 @@
                     <br>
                     <div class="scrollspy-item">
                     </div>
+                    
                     <!-- AREA ONDE QUERO OS LIST GROUPS -->
 
                     <div class="btn-group d-flex w-100 mt-3">
-                        <button type="button" class="btn btn-primary mb-4 w-50" data-bs-toggle="createQuestao" title="Adicionar Questao">
+                        <button type="button" class="btn btn-primary mb-4 w-50" data-bs-toggle="modal" data-bs-toggle="createQuestao" title="Adicionar Questao" data-bs-target="#modalQuestaoCreate">
                             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
                                 <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
                                 <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
@@ -197,35 +198,84 @@
             </div>
         </div>
     </div>
-    
-    <!-- MODAL DA ATIVIDADE -->
-    <div class="modal fade" id="modalAtividade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalAtividadeLabel" aria-hidden="true">
+
+    <!-- MODAL DA QUESTAO -->
+    <div class="modal fade" id="modalQuestaoCreate" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalQuestaoLabel1" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <!-- Modal Header -->
-                <div class="modal-header">
-                    <h4 class="modal-title" id="modalAtividadeLabel">Criação de Atividade</h4>
+                <div class="modal-header text-dark">
+                    <h4 class="modal-title" id="modalQuestaoLabel1">Adicionar Questão</h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <!-- Modal body -->
-                <div class="modal-body">
-                    <div class="container-fluid">
-                        <div class="input-group mt-3 mb-3">
-                            <span class="input-group-text">Nome</span>
-                            <input type="text" class="form-control" id="txtNomeAtividade" placeholder="Nome da Disciplina">
-                        </div>
+                <div class="modal-body text-dark">
+                    <div class="input-group mt-3 mb-3">
+                        <span class="input-group-text">Nome</span>
+                        <input type="text" class="form-control" id="txtNomeQuestao" placeholder="Nome da Disciplina">
+                    </div>
+                    <div class="mb-3">
+                        <input class="form-control" type="file" id="formFile">
                     </div>
                 </div>
                 <!-- Modal footer -->
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-success" id="btnAtividade">Criar</button>
+                    <button type="submit" class="btn btn-success" id="btnQuestaoCreate">Criar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DA DISCPLINA DELETE -->
+    <div class="modal fade" id="modalAtividadeDelete" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalDisciplinaDelete" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title" id="" style="color: black;">Deseja Excluir a Disciplina?</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <div class="btn-group d-flex w-100 mt-3 mb-3">
+                            <button type="submit" class="btn btn-danger w-50" id="btnAtividadeDelete" data-bs-toggle="createInput" title="Adicionar Input">Sim</button>
+                            <a type="button" class="btn btn-secondary w-50" id="btnRodarSimulacao" data-bs-toggle="putInput" title="Editar Input" href="atividadeNew.html">Não</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- MODAL DA ATIVIDADE -->
+    <div class="modal fade" id="modalAtividadePut" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalAtividadeLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header text-dark">
+                    <h4 class="modal-title" id="modalAtividadeLabel">Atualização de Atividade</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <!-- Modal body -->
+                <div class="modal-body text-dark">
+                    <div class="input-group mt-3 mb-3">
+                        <span class="input-group-text">Nome</span>
+                        <input type="text" class="form-control" id="txtNomeAtividade" placeholder="Nome da Disciplina">
+                    </div>
+                </div>
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success" id="btnAtividadePut">Criar</button>
                 </div>
             </div>
         </div>
     </div>
 
     <script type="text/javascript" src="../js/atividade/atividade_onload.js"></script>
-    <script type="text/javascript" src="../js/atividade/upload_input.js"></script>
+    <script type="text/javascript" src="../js/atividade/atividate_put.js"></script>
+    <script type="text/javascript" src="../js/atividade/atividade_delete.js"></script>
+    <script type="text/javascript" src="../js/atividade/atividade_upload_questao.js"></script>
     <script>
         const sidebarBtn = document.getElementById("btnSide");
         const bodyElement = document.body;

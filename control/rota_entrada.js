@@ -1,0 +1,263 @@
+//app e banco são recebidos quando fazemos a chamada
+
+const Entrada = require("../model/Entrada");
+
+// de rotas_funcionarios
+module.exports = function (app, banco) {
+    const JwtToken = require("../model/jwtToken");
+
+    const Questao = require("../model/Questao");
+
+    const fs = require('fs');
+    const path = require('path');
+
+    //no bloco de codigo do professor/insert como posso testar o jwttoken do usuario vindo do bearer
+
+    /*
+
+        const jwt = new JwtToken();
+        const token = request.headers.authorization;
+        const tokenValido = jwt.validarToken(token);
+
+        if (tokenValido.status == true) {
+
+            const dadosUsuario = tokenValido.dados;
+
+        }else{
+            return response.status(401).json({ message: "Token inválido ou não fornecido" });
+        }
+
+    */
+
+    /*
+    CREATE
+    */
+    app.post("/entrada", (request, response) => {
+
+        const jwt = new JwtToken();
+        const token = request.headers.authorization;
+
+        const tokenValido = jwt.validarToken(token);
+
+        if (tokenValido.status == true) {
+
+            const nome = request.body.nome;
+            const path = request.body.path;
+            const Questao_idQuestao = request.body.Questao_idQuestao;
+
+            const entrada = new Entrada(banco);
+
+            entrada.setNome(nome);
+            entrada.setPath(path);
+
+            const questao = new Questao(banco);
+            questao.setIdQuestao(Questao_idQuestao);
+
+            entrada.setQuestao(questao);
+
+            entrada.create().then((resultadosBanco) => {
+
+                const lastInsertId = resultadosBanco.insertId;
+
+                const resposta = {
+                status: true,
+                msg: "Executado com sucesso",
+                codigo: "004",
+                dados: {
+                    id: lastInsertId,
+                    nome: questao.getNome(),
+                    path: questao.getPath()
+                },
+                };
+                response.status(200).send(resposta);
+
+            }).catch((erro) => {
+                console.error("Error retrieving users:", erro);
+            });
+        
+        }else{
+            return response.status(401).json({ message: "Token inválido ou não fornecido" });
+        }
+    });
+
+    /*
+    get ALL
+    */
+    app.get("/entrada", function (request, response) {
+
+        const jwt = new JwtToken();
+        const token = request.headers.authorization;
+        const tokenValido = jwt.validarToken(token);
+
+        if (tokenValido.status == true) {
+
+            const entrada = new Entrada(banco);
+
+            entrada.read().then((resultadosBanco) => {
+
+                const resposta = {
+                    status: true,
+                    msg: "Executado com sucesso",
+                    dados: resultadosBanco,
+                };
+
+                response.status(200).send(resposta);
+
+            }).catch((erro) => {
+                const resposta = {
+                    status: false,
+                    msg: "erro ao executar",
+                    dados: erro,
+                };
+                response.status(200).send(resposta);
+            });
+
+        }else{
+            return response.status(401).json({ message: "Token inválido ou não fornecido" });
+        }
+
+    });
+
+    /*
+    get ID
+    */
+    app.get("/entrada/:id/", (request, response) => {
+
+        const jwt = new JwtToken();
+        const token = request.headers.authorization;
+        const tokenValido = jwt.validarToken(token);
+
+        if (tokenValido.status == true) {
+
+            const entrada = new Entrada(banco);
+
+            const id = request.params.id;
+
+            entrada.setIdEntrada(id);
+
+            entrada.read().then((resultadosBanco) => {
+                const resposta = {
+                status: true,
+                msg: "executado com sucesso",
+                dados: resultadosBanco,
+                };
+                response.status(200).send(resposta);
+            })
+            .catch((erro) => {
+                const resposta = {
+                status: false,
+                msg: "erro ao executar",
+                codigo: "005",
+                dados: erro,
+                };
+                response.status(200).send(resposta);
+            });
+
+        }else{
+            return response.status(401).json({ message: "Token inválido ou não fornecido" });
+        }
+
+    });
+
+    /*
+    update
+    */
+    app.put("/questao/:id", (request, response) => {
+
+        const jwt = new JwtToken();
+        const token = request.headers.authorization;
+        const tokenValido = jwt.validarToken(token);
+
+        if (tokenValido.status == true) {
+
+            const id = request.params.id;
+            const nome = request.body.nome;
+            const path = request.body.path;
+            const Questao_idQuestao = request.body.Questao_idQuestao;
+
+            const entrada = new Entrada(banco);
+
+            entrada.setIdEntrada(id);
+            entrada.setNome(nome);
+            entrada.setPath(path);
+
+            const questao = new Questao(banco);
+            questao.setIdQuestao(Questao_idQuestao);
+
+            entrada.setQuestao(questao);
+
+            // isso memo, ai agr to quase acabando a area do back-end
+            // ss do prof
+            // ai vou pro front e ja faco aqle bglh d rodar simulacao
+            //muitooo suave
+            //sim ta mtoo diboa agr
+            // entt so tem q fazer tlg SKAKSAK
+
+            entrada.update().then((resultadosBanco) => {
+
+                const resposta = {
+                status: true,
+                msg: "Executado com sucesso",
+                codigo: "004",
+                dados: {
+                    id: entrada.getIdQuestao(),
+                    nome: entrada.getNome(),
+                    path: entrada.getPath()
+                },
+                };
+                response.status(200).send(resposta);
+
+            }).catch((erro) => {
+                console.error("Error retrieving users:", erro);
+            });
+        
+        }else{
+            return response.status(401).json({ message: "Token inválido ou não fornecido" });
+        }
+    });
+
+    /*
+    delete
+    */
+    app.delete("/entrada/:id", (request, response) => {
+
+        //entt tira esse trabalho da poha d mexer com pasta tlg
+        //agr eh so dar read no path e fds
+        //tipo vai funcionar tlg, tipo bem pouco menos eficiente mas pelo menos n vou passar sufoco
+        //mn ent, nosso trabalho ta bunitinho pra ele xingar
+        //marco pa krl
+        //vou pegar foto pera la
+        //rapidao vou pegar a pasta ja volto
+
+        const jwt = new JwtToken();
+        const token = request.headers.authorization;
+        const tokenValido = jwt.validarToken(token);
+
+        if (tokenValido.status == true) {
+
+            const id = request.params.id;
+
+            const entrada = new Entrada(banco);
+
+            entrada.setIdEntrada(id);
+
+            entrada.delete().then((resultadosBanco) => {
+
+                const resposta = {
+                status: true,
+                msg: "Excluido com sucesso",
+                codigo: "004",
+                dados: {
+                    id: entrada.getIdEntrada(),
+                },
+                };
+                response.status(200).send(resposta);
+            }).catch((erro) => {
+                console.error("Error retrieving users:", erro);
+            });
+
+        }else{
+            return response.status(401).json({ message: "Token inválido ou não fornecido" });
+        }
+    });
+};
