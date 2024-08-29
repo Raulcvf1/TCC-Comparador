@@ -3,7 +3,7 @@ module.exports = function (app, banco) {
     const fs = require('fs');
     const path = require('path');
 
-    app.post("/uploadQuestao", (request, response) => {
+    app.post("/upload", (request, response) => {
         const jwt = new JwtToken();
         const token = request.headers.authorization;
         const tokenValido = jwt.validarToken(token);

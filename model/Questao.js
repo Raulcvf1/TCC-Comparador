@@ -54,8 +54,9 @@ module.exports = class Questao {
 
     async readQuestaoAtividade() {
       const operacaoAssincrona = new Promise((resolve, reject) => {
-        const id = this.getIdQuestao();
-        let params = [id];
+        const atividade = this.getAtividade();
+        const Atividade_idAtividade = atividade.idAtividade;
+        let params = [Atividade_idAtividade];
         let SQL = "SELECT idQuestao, nome, path_questao FROM colegiosunivap.questao WHERE Atividade_idAtividade = ?;";
 
         this.banco.query(SQL, params, function (error, result) {

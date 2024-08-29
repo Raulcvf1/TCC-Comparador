@@ -51,7 +51,6 @@ module.exports = class Disciplina {
       });
       return operacaoAssincrona;
     }
-  
     
     async readAtividadeDisciplina() {
       const operacaoAssincrona = new Promise((resolve, reject) => {
@@ -73,49 +72,6 @@ module.exports = class Disciplina {
       });
       return operacaoAssincrona;
     }
-    
-    /*
-    async readDisciplinaProfessor() {
-      const operacaoAssincrona = new Promise((resolve, reject) => {
-        const professor = this.getProfessor();
-        const professor_registro = professor.registro;
-  
-        let params = [professor_registro];
-        
-        let SQL = "SELECT nome, serie, ano, duplicado, linguagem, codigo_unico FROM colegiosunivap.disciplina WHERE Professor_registro = ?;";
-  
-        this.banco.query(SQL, params, function (error, result) {
-          if (error) {
-            console.log(error);
-            reject(error);
-          } else {
-            resolve(result);
-          }
-        });
-      });
-      return operacaoAssincrona;
-    }
-  
-    async readDisciplinaAluno() {
-      const operacaoAssincrona = new Promise((resolve, reject) => {
-        const idDisciplina = this.getIdDisciplina();
-  
-        let params = [idDisciplina];
-        
-        let SQL = "SELECT ad.id_Aluno_matricula , a.matricula, a.rg, a.nome, a.email FROM Aluno a JOIN Aluno_Disciplina ad ON a.matricula = ad.Aluno_matricula WHERE ad.Disciplina_idDisciplina = ?;";
-  
-        this.banco.query(SQL, params, function (error, result) {
-          if (error) {
-            console.log(error);
-            reject(error);
-          } else {
-            resolve(result);
-          }
-        });
-      });
-      return operacaoAssincrona;
-    }
-    */
   
     async update() {
       const operacaoAssincrona = new Promise((resolve, reject) => {

@@ -1,23 +1,5 @@
 // login.js
 
-document.addEventListener("DOMContentLoaded", () => {
-    // Função para mostrar o formulário de login
-    function showLogin() {
-        document.getElementById("login-card").style.display = "block";
-        document.getElementById("register-card").style.display = "none";
-    }
-
-    // Função para mostrar o formulário de cadastro
-    function showRegister() {
-        document.getElementById("login-card").style.display = "none";
-        document.getElementById("register-card").style.display = "block";
-    }
-
-    // Tornar as funções globais
-    window.showLogin = showLogin;
-    window.showRegister = showRegister;
-});
-
 const btnLogin = document.getElementById("btnLogin");
 const txtEmail = document.getElementById("txtEmailLogin");
 const txtSenha = document.getElementById("txtSenhaLogin");

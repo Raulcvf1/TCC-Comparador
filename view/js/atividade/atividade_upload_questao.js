@@ -22,7 +22,7 @@ btnQuestaoCreate.onclick = async function() {
   try {
     const token = localStorage.getItem("token");
 
-    const uploadResponse = await fetch('/uploadQuestao', {
+    const uploadResponse = await fetch('/upload', {
       method: 'POST',
       body: JSON.stringify(data),
       headers: {

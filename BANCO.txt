@@ -16,7 +16,7 @@ USE `colegiosUnivap`;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `colegiosUnivap`.`Aluno` (
   `matricula` INT(10) NOT NULL,
-  `rg` INT(10) NOT NULL,
+  `cpf` INT(11) NOT NULL,
   `nome` VARCHAR(128) NOT NULL,
   `email` VARCHAR(128) NOT NULL,
   `senha` VARCHAR(128) NOT NULL,

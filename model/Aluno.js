@@ -5,7 +5,7 @@ module.exports = class Aluno {
     constructor(banco) {
         this.banco = banco;
         this.matricula = null;
-        this.rg=null;
+        this.cpf=null;
         this.nome = null;
         this.email = null;
         this.senha = null;
@@ -15,15 +15,15 @@ module.exports = class Aluno {
     async create() {
         const operacaoAssincrona = new Promise((resolve, reject) => {
             const matricula = this.getMatricula();
-            const rg = this.getRg();
+            const cpf = this.getCpf();
             const nome = this.getNome();
             const email = this.getEmail();
             const senha = md5(this.getSenha());
             
 
-            const params = [matricula, rg, nome, email, senha];
+            const params = [matricula, cpf, nome, email, senha];
 
-            let sql = "INSERT INTO aluno (matricula, rg, nome, email, senha) VALUES (?, ?, ?, ?, ?);";
+            let sql = "INSERT INTO aluno (matricula, cpf, nome, email, senha) VALUES (?, ?, ?, ?, ?);";
 
             this.banco.query(sql, params, function (error, result) {
                 if (error) {
@@ -42,9 +42,9 @@ module.exports = class Aluno {
             let params = [matricula];
             let SQL = "";
             if (matricula == null) {
-                SQL = "SELECT matricula,rg, nome, email FROM colegiosunivap.aluno;";
+                SQL = "SELECT matricula,cpf, nome, email FROM colegiosunivap.aluno;";
             } else {
-                SQL = "SELECT matricula,rg, nome, email FROM colegiosunivap.aluno WHERE matricula = ?;";
+                SQL = "SELECT matricula,cpf, nome, email FROM colegiosunivap.aluno WHERE matricula = ?;";
             }
             this.banco.query(SQL, params, function (error, result) {
                 if (error) {
@@ -62,7 +62,7 @@ module.exports = class Aluno {
     async update() {
         const operacaoAssincrona = new Promise((resolve, reject) => {
             const matricula = this.getMatricula();
-            const rg = this.getRg();
+            const cpf = this.getCpf();
             const nome = this.getNome();
             const email = this.getEmail();
             const senha = md5(this.getSenha());
@@ -135,11 +135,11 @@ module.exports = class Aluno {
     getMatricula() {
         return this.matricula
     }
-    setRg(newRg){
-        this.rg = newRg
+    setCpf(newCpf){
+        this.cpf = newCpf
     }
-    getRg(){
-        return this.rg
+    getCpf(){
+        return this.cpf
     }
     setNome(name) {
         this.nome = name;

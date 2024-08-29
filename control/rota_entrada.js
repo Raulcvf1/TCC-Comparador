@@ -41,13 +41,11 @@ module.exports = function (app, banco) {
 
         if (tokenValido.status == true) {
 
-            const nome = request.body.nome;
             const path = request.body.path;
             const Questao_idQuestao = request.body.Questao_idQuestao;
 
             const entrada = new Entrada(banco);
 
-            entrada.setNome(nome);
             entrada.setPath(path);
 
             const questao = new Questao(banco);
@@ -65,7 +63,6 @@ module.exports = function (app, banco) {
                 codigo: "004",
                 dados: {
                     id: lastInsertId,
-                    nome: questao.getNome(),
                     path: questao.getPath()
                 },
                 };
@@ -160,6 +157,49 @@ module.exports = function (app, banco) {
     });
 
     /*
+    get Entrada Questao
+    */
+    app.get("/entrada/questao/:id/", (request, response) => {
+
+        const jwt = new JwtToken();
+        const token = request.headers.authorization;
+        const tokenValido = jwt.validarToken(token);
+
+        if (tokenValido.status == true) {
+
+            const questao = new Questao(banco);
+            const entrada = new Entrada(banco);
+
+            const id = request.params.id;
+
+            questao.setIdQuestao(id);
+            entrada.setQuestao(questao);
+
+            entrada.readEntradaQuestao().then((resultadosBanco) => {
+                const resposta = {
+                status: true,
+                msg: "executado com sucesso",
+                dados: resultadosBanco,
+                };
+                response.status(200).send(resposta);
+            })
+            .catch((erro) => {
+                const resposta = {
+                status: false,
+                msg: "erro ao executar",
+                codigo: "005",
+                dados: erro,
+                };
+                response.status(200).send(resposta);
+            });
+
+        }else{
+            return response.status(401).json({ message: "Token inválido ou não fornecido" });
+        }
+
+    });
+
+    /*
     update
     */
     app.put("/questao/:id", (request, response) => {
@@ -171,7 +211,6 @@ module.exports = function (app, banco) {
         if (tokenValido.status == true) {
 
             const id = request.params.id;
-            const nome = request.body.nome;
             const path = request.body.path;
             const Questao_idQuestao = request.body.Questao_idQuestao;
 
@@ -201,7 +240,6 @@ module.exports = function (app, banco) {
                 codigo: "004",
                 dados: {
                     id: entrada.getIdQuestao(),
-                    nome: entrada.getNome(),
                     path: entrada.getPath()
                 },
                 };
@@ -220,14 +258,6 @@ module.exports = function (app, banco) {
     delete
     */
     app.delete("/entrada/:id", (request, response) => {
-
-        //entt tira esse trabalho da poha d mexer com pasta tlg
-        //agr eh so dar read no path e fds
-        //tipo vai funcionar tlg, tipo bem pouco menos eficiente mas pelo menos n vou passar sufoco
-        //mn ent, nosso trabalho ta bunitinho pra ele xingar
-        //marco pa krl
-        //vou pegar foto pera la
-        //rapidao vou pegar a pasta ja volto
 
         const jwt = new JwtToken();
         const token = request.headers.authorization;

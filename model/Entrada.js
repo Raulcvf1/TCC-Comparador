@@ -2,7 +2,6 @@ module.exports = class Entrada {
     constructor(banco) {
       this.banco = banco;
       this.idEntrada = null;
-      this.nome = null;
       this.paht_entrada = null;
       this.Questao = {
         idQuestao: null,
@@ -11,13 +10,12 @@ module.exports = class Entrada {
   
     async create() {  
       const operacaoAssincrona = new Promise((resolve, reject) => {
-        const nome = this.getNome();
         const path = this.getPath();
         const questao = this.getQuestao();
         const Questao_idQuestao = questao.idQuestao;
   
-        let params = [nome, path, Questao_idQuestao];
-        let sql = "INSERT INTO colegiosunivap.entrada (nome, path_entrada, Questao_idQuestao) VALUES (?, ?, ?);";
+        let params = [path, Questao_idQuestao];
+        let sql = "INSERT INTO colegiosunivap.entrada (path_entrada, Questao_idQuestao) VALUES (?, ?);";
 
         this.banco.query(sql, params, function (error, result) {
           if (error) {
@@ -36,10 +34,29 @@ module.exports = class Entrada {
         let params = [id];
         let SQL = "";
         if (id == null) {
-          SQL = "SELECT nome, path_entrada FROM colegiosunivap.entrada;";
+          SQL = "SELECT path_entrada FROM colegiosunivap.entrada;";
         } else {
-          SQL = "SELECT nome, path_entrada FROM colegiosunivap.entrada WHERE idEntrada = ?;";
+          SQL = "SELECT path_entrada FROM colegiosunivap.entrada WHERE idEntrada = ?;";
         }
+        this.banco.query(SQL, params, function (error, result) {
+          if (error) {
+            console.log(error);
+            reject(error);
+          } else {
+            resolve(result);
+          }
+        });
+      });
+      return operacaoAssincrona;
+    }
+
+    async readEntradaQuestao() {
+      const operacaoAssincrona = new Promise((resolve, reject) => {
+        const questao = this.getQuestao();
+        const Questao_idQuestao = questao.idQuestao;
+        let params = [Questao_idQuestao];
+        let SQL = "SELECT idEntrada, path_entrada FROM colegiosunivap.entrada WHERE Questao_idQuestao = ?;";
+
         this.banco.query(SQL, params, function (error, result) {
           if (error) {
             console.log(error);
@@ -55,14 +72,13 @@ module.exports = class Entrada {
     async update() {
       const operacaoAssincrona = new Promise((resolve, reject) => {
         const idEntrada = this.getIdEntrada();
-        const nome = this.getNome();
         const path = this.getPath();
         const questao = this.getQuestao();
         const Questao_idQuestao = questao.idQuestao;
   
-        const params = [nome, path, Questao_idQuestao, idEntrada];
+        const params = [path, Questao_idQuestao, idEntrada];
   
-        let sql = "UPDATE colegiosunivap.entrada SET nome = ?, path_entrada = ?, Questao_idQuestao = ? WHERE idEntrada = ?;";
+        let sql = "UPDATE colegiosunivap.entrada SET path_entrada = ?, Questao_idQuestao = ? WHERE idEntrada = ?;";
   
         this.banco.query(sql, params, function (error, result) {
           if (error) {
@@ -98,13 +114,6 @@ module.exports = class Entrada {
     }
     getIdEntrada() {
       return this.idEntrada;
-    }
-  
-    setNome(newNome) {
-      this.nome = newNome;
-    }
-    getNome() {
-      return this.nome;
     }
 
     setPath(newPath){

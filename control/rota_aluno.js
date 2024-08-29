@@ -66,14 +66,14 @@ module.exports = function (app, banco) {
     app.post('/aluno', (request, response) => {
         
         const matricula = request.body.matricula;
-        const rg = request.body.rg;
+        const cpf = request.body.cpf;
         const nome = request.body.nome;
         const email = request.body.email;
         const senha = request.body.senha;
     
         const aluno = new Aluno(banco);
         
-        aluno.setRg(rg)
+        aluno.setCpf(cpf)
         aluno.setMatricula(matricula)
         aluno.setNome(nome);
         aluno.setEmail(email);
