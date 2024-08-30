@@ -26,7 +26,14 @@ module.exports = function (app, banco) {
             }
         }
 
-        const filePath = path.join(customPath, `${Date.now()}_${fileName}`);
+        const tipoArquivo = fileName.split('.');
+
+        var filePath = path.join(customPath, `${Date.now()}_${fileName}`);
+
+        if(tipoArquivo[1] == "java"){
+            filePath = path.join(customPath, fileName);
+        }
+
 
         fs.writeFile(filePath, fileContent, (err) => {
             if (err) {

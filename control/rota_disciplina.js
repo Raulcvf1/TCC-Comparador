@@ -7,6 +7,7 @@ module.exports = function (app, banco) {
     const JwtToken = require("../model/jwtToken");
 
     const Professor = require("../model/Professor");
+    const Aluno = require("../model/Aluno");
 
     const fs = require('fs');
     const path = require('path');
@@ -222,6 +223,47 @@ module.exports = function (app, banco) {
 
     });
 
+    /*
+    get ALUNO DISCIPLINA
+    */
+    app.get("/aluno/disciplina/:idDisciplina/", (request, response) => {
+
+        const jwt = new JwtToken();
+        const token = request.headers.authorization;
+        const tokenValido = jwt.validarToken(token);
+
+        if (tokenValido.status == true) {
+
+            const disciplina = new Disciplina(banco);
+
+            const idDiscplina = request.params.idDisciplina;
+
+            disciplina.setIdDisciplina(idDiscplina);
+
+            disciplina.readAlunoDisciplina()
+            .then((resultadosBanco) => {
+                const resposta = {
+                status: true,
+                msg: "executado com sucesso",
+                dados: resultadosBanco,
+                };
+                response.status(200).send(resposta);
+            })
+            .catch((erro) => {
+                const resposta = {
+                status: false,
+                msg: "erro ao executar",
+                codigo: "005",
+                dados: erro,
+                };
+                response.status(200).send(resposta);
+            });
+
+        }else{
+            return response.status(401).json({ message: "Token inválido ou não fornecido" });
+        }
+
+    });
 
     /*
     get Disciplina Professor atual
@@ -318,9 +360,9 @@ module.exports = function (app, banco) {
     });
 
     /*
-    get Disciplina Aluno
+    get Disciplina Aluno atual
     */
-    app.get("/disciplina/aluno/:id/", (request, response) => {
+    app.get("/disciplina/aluno/atual/:id/:ano", (request, response) => {
 
         const jwt = new JwtToken();
         const token = request.headers.authorization;
@@ -330,11 +372,16 @@ module.exports = function (app, banco) {
 
             const disciplina = new Disciplina(banco);
 
-            const idDisciplina = request.params.id;
+            const matricula = request.params.id;
+            const ano = request.params.ano;
 
-            disciplina.setIdDisciplina(idDisciplina);
+            const aluno = new Aluno(banco);
+            aluno.setMatricula(matricula);
 
-            disciplina.readDisciplinaAluno()
+            disciplina.setAluno(aluno);
+            disciplina.setAno(ano);
+
+            disciplina.readDisciplinaAluno_ano_atual()
             .then((resultadosBanco) => {
                 const resposta = {
                 status: true,
@@ -359,6 +406,53 @@ module.exports = function (app, banco) {
 
     });
 
+    /*
+    get Disciplina Aluno Antiga
+    */
+    app.get("/disciplina/aluno/antigo/:id/:ano", (request, response) => {
+
+        const jwt = new JwtToken();
+        const token = request.headers.authorization;
+        const tokenValido = jwt.validarToken(token);
+
+        if (tokenValido.status == true) {
+
+            const disciplina = new Disciplina(banco);
+
+            const matricula = request.params.id;
+            const ano = request.params.ano;
+
+            const aluno = new Aluno(banco);
+            aluno.setMatricula(matricula);
+
+            disciplina.setAluno(aluno);
+            disciplina.setAno(ano);
+
+            disciplina.readDisciplinaAluno_ano_antigo()
+            .then((resultadosBanco) => {
+                const resposta = {
+                status: true,
+                msg: "executado com sucesso",
+                dados: resultadosBanco,
+                };
+                response.status(200).send(resposta);
+            })
+            .catch((erro) => {
+                const resposta = {
+                status: false,
+                msg: "erro ao executar",
+                codigo: "005",
+                dados: erro,
+                };
+                response.status(200).send(resposta);
+            });
+
+        }else{
+            return response.status(401).json({ message: "Token inválido ou não fornecido" });
+        }
+
+    });
+    
     /*
     update
     */

@@ -44,14 +44,12 @@ module.exports = function (app, banco) {
         if (tokenValido.status == true) {
 
             const matricula = request.body.matricula;
-            const id = request.body.id;
-            const disciplinaid = request.body.disciplinaid;
+            const idDisciplina = request.body.idDisciplina;
      
   
             const alunodisciplina = new AlunoDisciplina(banco);
 
-            alunodisciplina.setId(id);
-            alunodisciplina.setIdDisciplina(disciplinaid);
+            alunodisciplina.setIdDisciplina(idDisciplina);
             
             const aluno = new Aluno(banco);
 
@@ -59,20 +57,9 @@ module.exports = function (app, banco) {
 
             alunodisciplina.setAluno(aluno);
             
-            alunodisciplina.create()
-
-            .then((resultadosBanco) => {
+            alunodisciplina.create().then((resultadosBanco) => {
 
                 const lastInsertId = resultadosBanco.insertId;
-
-                /* Criar subpasta com o ID do professor
-                const disciplinaDir = path.join(__dirname, '../professor/' + professor_registro, lastInsertId.toString());
-                fs.mkdir(disciplinaDir, (err) => {
-                    if (err) {
-                        console.log("DEU ERRO");
-                    }
-                    console.log("DEU CERTO")
-                });*/
 
                 const resposta = {
                 status: true,
@@ -80,8 +67,8 @@ module.exports = function (app, banco) {
                 codigo: "004",
                 dados: {
                     id: lastInsertId,
-                    idaluno: alunodisciplina.getId(),
-                    iddadisciplina: alunodisciplina.getIdDisciplina(),
+                    matricula: aluno.getMatricula(),
+                    idDisciplina: alunodisciplina.getIdDisciplina(),
                 },
                 };
                 response.status(200).send(resposta);
@@ -182,7 +169,7 @@ module.exports = function (app, banco) {
      /*
     get Disciplina Aluno
     */
-    app.get("/disciplina/alunodisciplina/:code/", (request, response) => {
+    app.get("/aluno/disciplina/code/:code/", (request, response) => {
 
         const jwt = new JwtToken();
         const token = request.headers.authorization;
@@ -190,14 +177,60 @@ module.exports = function (app, banco) {
 
         if (tokenValido.status == true) {
 
-            const disciplina = new Disciplina(banco);
+            const alunodisciplina = new AlunoDisciplina(banco);
 
             const codeDisciplina = request.params.code;
 
-            disciplina.setCode(codeDisciplina);
+            alunodisciplina.setCode(codeDisciplina);
 
-            disciplina.readDisciplinaAluno()
-            .then((resultadosBanco) => {
+            alunodisciplina.readCodeDisciplina().then((resultadosBanco) => {
+                const resposta = {
+                status: true,
+                msg: "executado com sucesso",
+                dados: resultadosBanco,
+                };
+                response.status(200).send(resposta);
+            })
+            .catch((erro) => {
+                const resposta = {
+                status: false,
+                msg: "erro ao executar",
+                codigo: "005",
+                dados: erro,
+                };
+                response.status(200).send(resposta);
+            });
+
+        }else{
+            return response.status(401).json({ message: "Token inválido ou não fornecido" });
+        }
+
+    });
+
+    /*
+    get ID ALUNO DISCIPLINA
+    */
+    app.get("/idAlunoDisciplina/:matricula/:id", (request, response) => {
+
+        const jwt = new JwtToken();
+        const token = request.headers.authorization;
+        const tokenValido = jwt.validarToken(token);
+
+        if (tokenValido.status == true) {
+
+            const alunodisciplina = new AlunoDisciplina(banco);
+            
+            const matricula = request.params.matricula;
+            const id = request.params.id;
+
+            const aluno = new Aluno(banco);
+
+            aluno.setMatricula(matricula);
+            alunodisciplina.setAluno(aluno);
+
+            alunodisciplina.setIdDisciplina(id);
+
+            alunodisciplina.readIdMatriculaIdDisciplina().then((resultadosBanco) => {
                 const resposta = {
                 status: true,
                 msg: "executado com sucesso",
@@ -275,7 +308,7 @@ module.exports = function (app, banco) {
     /*
     delete
     */
-    app.delete("/disciplina/:id", (request, response) => {
+    app.delete("/alunoDisciplina/:id", (request, response) => {
 
         const jwt = new JwtToken();
         const token = request.headers.authorization;
@@ -289,15 +322,13 @@ module.exports = function (app, banco) {
 
             alunodisciplina.setId(id);
 
-            alunodisciplina.delete()
-            
-            .then((resultadosBanco) => {
+            alunodisciplina.delete().then((resultadosBanco) => {
                 const resposta = {
                 status: true,
                 msg: "Excluido com sucesso",
                 codigo: "004",
                 dados: {
-                    registro: disciplina.getIdDisciplina(),
+                    idAlunoDisciplina: alunodisciplina.getId(),
                 },
                 };
                 response.status(200).send(resposta);

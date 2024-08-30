@@ -1,23 +1,25 @@
-const path = require('path');
-const { executeAndReturnContent } = require('../model/Simulacao');
+const Simulacao = require('../model/Simulacao');
 
-const compareController = async (req, res) => {
+module.exports = function (app) {
+    const JwtToken = require("../model/jwtToken");
 
-    const language = req.body.language;
-    const registro = req.body.registro;
-    const idDisciplina = req.body.idDisciplina;
-    const idAtividade = req.body.idAtividade;
-  
-    const professorDir = path.join(__dirname, '..', 'professor', registro, idDisciplina, idAtividade);
+    app.post('/simulacao', async (req, res) => {
+        const jwt = new JwtToken();
+        const token = req.headers.authorization;
+        const tokenValido = jwt.validarToken(token);
 
-    // Executar e comparar arquivos
-    try {
-        const result = await executeAndReturnContent(file1.name, inputs.name, language, professorDir);
-        res.json(result);
-    } catch (err) {
-        res.status(500).send(err.message);
-    }
+        if (tokenValido.status == true) {
+            const { language, path_questao, path_entrada } = req.body;
 
+            try {
+                const simulacao = new Simulacao(language, path_questao, path_entrada);
+                const resultado = await simulacao.executar();
+                res.status(200).json(resultado);
+            } catch (erro) {
+                res.status(500).json({ message: erro.message });
+            }
+        } else {
+            res.status(401).json({ message: "Token inválido ou não fornecido" });
+        }
+    });
 };
-
-module.exports = compareController;

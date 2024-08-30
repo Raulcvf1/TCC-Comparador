@@ -236,6 +236,48 @@ module.exports = function (app, banco) {
 
     });
 
+        /*
+    get ID
+    */
+    app.get("/professor/foto/:id/", (request, response) => {
+
+        const jwt = new JwtToken();
+        const token = request.headers.authorization;
+        const tokenValido = jwt.validarToken(token);
+
+        if (tokenValido.status == true) {
+
+            const professor = new Professor(banco);
+
+            const registro = request.params.id;
+
+            professor.setRegistro(registro);
+
+            professor.readPahtFoto()
+            .then((resultadosBanco) => {
+                const resposta = {
+                status: true,
+                msg: "executado com sucesso",
+                dados: resultadosBanco,
+                };
+                response.status(200).send(resposta);
+            })
+            .catch((erro) => {
+                const resposta = {
+                status: false,
+                msg: "erro ao executar",
+                codigo: "005",
+                dados: erro,
+                };
+                response.status(200).send(resposta);
+            });
+
+        }else{
+            return response.status(401).json({ message: "Token inválido ou não fornecido" });
+        }
+
+    });
+
     /*
     update
     */
@@ -251,6 +293,7 @@ module.exports = function (app, banco) {
             const nome = request.body.nome;
             const email = request.body.email;
             const senha = request.body.senha;
+            const path = request.body.path;
 
             const professor = new Professor(banco);
 
@@ -258,6 +301,7 @@ module.exports = function (app, banco) {
             professor.setNome(nome);
             professor.setEmail(email);
             professor.setSenha(senha);
+            professor.setPath(path);
 
             professor.update()
             .then((resultadosBanco) => {
@@ -269,6 +313,7 @@ module.exports = function (app, banco) {
                     registro: professor.getRegistro(),
                     nome: professor.getNome(),
                     email: professor.getEmail(),
+                    path_foto: professor.getPath()
                 },
                 };
                 response.status(200).send(resposta);

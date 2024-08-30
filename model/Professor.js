@@ -8,6 +8,7 @@ module.exports = class Professor {
     this.nome = null;
     this.email = null;
     this.senha = null;
+    this.path_foto = null;
   }
 
   async create() {
@@ -58,6 +59,25 @@ module.exports = class Professor {
     return operacaoAssincrona;
   }
 
+  async readPahtFoto() {
+    const operacaoAssincrona = new Promise((resolve, reject) => {
+      const registro = this.getRegistro();
+      let params = [registro];
+
+      let SQL = "SELECT path_foto FROM colegiosunivap.professor WHERE registro = ?;";
+
+      this.banco.query(SQL, params, function (error, result) {
+        if (error) {
+          console.log(error);
+          reject(error);
+        } else {
+          resolve(result);
+        }
+      });
+    });
+    return operacaoAssincrona;
+  }
+
 
   async update() {
     const operacaoAssincrona = new Promise((resolve, reject) => {
@@ -65,10 +85,11 @@ module.exports = class Professor {
       const nome = this.getNome();
       const email = this.getEmail();
       const senha = md5(this.getSenha());
+      const path = this.getPath();
 
-      let parametros = [nome, email, senha, registro];
+      let parametros = [nome, email, senha, path, registro];
       let sql =
-        "update professor set nome=? ,email=? ,senha=? where registro = ?;";
+        "update professor set nome=? ,email=? ,senha=?, path_foto = ? where registro = ?;";
       this.banco.query(sql, parametros, function (error, result) {
         if (error) {
           reject(error);
@@ -154,5 +175,11 @@ module.exports = class Professor {
   }
   getSenha() {
     return this.senha;
+  }
+  setPath(newPath){
+    this.path_foto = newPath;
+  }
+  getPath(){
+    return this.path;
   }
 };

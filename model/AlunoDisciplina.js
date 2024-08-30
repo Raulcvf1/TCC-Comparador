@@ -58,13 +58,33 @@ module.exports = class Disciplina {
     return operacaoAssincrona;
   }
 
-  async readCodeUnicoDisciplina() {
+  async readCodeDisciplina() {
     const operacaoAssincrona = new Promise((resolve, reject) => {
       const code = this.getCode();
 
       let params = [code];
 
       let SQL = "SELECT idDisciplina FROM colegiosunivap.disciplina WHERE codigo_unico = ?;";
+
+      this.banco.query(SQL, params, function (error, result) {
+        if (error) {
+          console.log(error);
+          reject(error);
+        } else {
+          resolve(result);
+        }
+      });
+    });
+    return operacaoAssincrona;
+  }
+
+  async readIdMatriculaIdDisciplina() {
+    const operacaoAssincrona = new Promise((resolve, reject) => {
+      const aluno = this.getAluno();
+      const matricula = aluno.matricula;
+      const idDisciplina = this.getIdDisciplina();
+      let params = [matricula, idDisciplina];
+      let SQL = "SELECT id_Aluno_matricula FROM colegiosunivap.aluno_disciplina WHERE Aluno_matricula = ? AND Disciplina_idDisciplina = ?;";
 
       this.banco.query(SQL, params, function (error, result) {
         if (error) {
@@ -162,14 +182,12 @@ module.exports = class Disciplina {
   getIdDisciplina() {
     return this.idDisciplina;
   }
-
   setId(newId){
-   this.id=Id;
+   this.id = newId;
   }
   getId(){
-      return this.id;
+    return this.id;
   }
-
   setAluno(newAluno) {
     this.aluno = newAluno;
   }

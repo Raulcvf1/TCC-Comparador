@@ -4,11 +4,15 @@ const fileUpload = require('express-fileupload'); // Remova se não for usar o e
 
 const compareController = require('./control/compareController');
 const compareProfessor = require('./control/compareProfessor');
-const rota_simulacao = require('./control/rota_simulacao');
 const rota_conteudo = require('./control/rota_conteudo');
 
 const mysql = require('mysql');
 
+const rota_upload_foto = require('./control/rota_upload_foto.js');
+const rota_comparador = require('./control/rota_comparador.js');
+const rota_entrega = require('./control/rota_entrega');
+const rota_aluno_disciplina = require('./control/rota_aluno_disciplina');
+const rota_simulacao = require('./control/rota_simulacao');
 const rota_conteudo_arquivo = require('./control/rota_conteudo_arquivo');
 const rota_upload_copia = require('./control/rota_upload_copia');
 const rota_delete_path = require('./control/rota_delete_path');
@@ -21,13 +25,14 @@ const rota_entrada = require('./control/rota_entrada');
 
 const app = express();
 
+// Configuração do middleware para processamento de arquivos
+app.use(fileUpload());
 app.use(express.static('js'));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'view')));
 
 app.post('/compare', compareController);
 app.post('/uploadProfessor', compareProfessor);
-app.post('/simulacaoProfessor', rota_simulacao);
 app.post('/conteudoProfessor', rota_conteudo);
 
 var banco = mysql.createPool({
@@ -38,6 +43,11 @@ var banco = mysql.createPool({
     database: 'colegiosunivap'
 });
 
+rota_upload_foto(app, banco);
+rota_comparador(app, banco);
+rota_entrega(app, banco);
+rota_aluno_disciplina(app, banco);
+rota_simulacao(app, banco);
 rota_conteudo_arquivo(app, banco)
 rota_upload_copia(app, banco);
 rota_delete_path(app, banco);
@@ -52,8 +62,8 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
     console.log(`http://localhost:${PORT}/`);
-    console.log(`http://localhost:${PORT}/professor/index.html`);
+    console.log(`http://localhost:${PORT}/professor/home.html`);
     console.log(`http://localhost:${PORT}/professor/login.html`);
-    console.log(`http://localhost:${PORT}/aluno/index.html`);
+    console.log(`http://localhost:${PORT}/aluno/home.html`);
     console.log(`http://localhost:${PORT}/aluno/login.html`);
 });

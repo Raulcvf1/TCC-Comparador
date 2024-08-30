@@ -9,8 +9,11 @@ module.exports = class Disciplina {
     this.linguagem = null;
     this.codigo_unico = null;
     this.Professor = {
-        registro: null,
+      registro: null,
     };
+    this.Aluno = {
+      matricula: null,
+    }
   }
 
   async create() {
@@ -85,6 +88,26 @@ module.exports = class Disciplina {
     return operacaoAssincrona;
   }
 
+  async readAlunoDisciplina() {
+    const operacaoAssincrona = new Promise((resolve, reject) => {
+      const idDisciplina = this.getIdDisciplina();
+
+      let params = [idDisciplina];
+      
+      let SQL = "SELECT Aluno.matricula, Aluno.nome, Aluno.email FROM Aluno JOIN Aluno_Disciplina ON Aluno.matricula = Aluno_Disciplina.Aluno_matricula WHERE Aluno_Disciplina.Disciplina_idDisciplina = ?;";
+
+      this.banco.query(SQL, params, function (error, result) {
+        if (error) {
+          console.log(error);
+          reject(error);
+        } else {
+          resolve(result);
+        }
+      });
+    });
+    return operacaoAssincrona;
+  }
+
   async readDisciplinaProfessor_ano_atual() {
     const operacaoAssincrona = new Promise((resolve, reject) => {
       const professor = this.getProfessor();
@@ -131,13 +154,39 @@ module.exports = class Disciplina {
     return operacaoAssincrona;
   }
 
-  async readDisciplinaAluno() {
+  async readDisciplinaAluno_ano_atual() {
     const operacaoAssincrona = new Promise((resolve, reject) => {
-      const idDisciplina = this.getIdDisciplina();
+      const aluno = this.getAluno();
+      const matricula = aluno.matricula;
 
-      let params = [idDisciplina];
+      const ano = this.getAno();
+
+      let params = [matricula, ano];
       
-      let SQL = "SELECT ad.id_Aluno_matricula , a.matricula, a.rg, a.nome, a.email FROM Aluno a JOIN Aluno_Disciplina ad ON a.matricula = ad.Aluno_matricula WHERE ad.Disciplina_idDisciplina = ?;";
+      let SQL = "SELECT  d.idDisciplina, d.nome AS nome_disciplina, d.serie, d.ano, d.linguagem, d.codigo_unico, p.nome AS nome_professor FROM  colegiosunivap.Aluno_Disciplina ad INNER JOIN colegiosunivap.Disciplina d ON ad.Disciplina_idDisciplina = d.idDisciplina INNER JOIN colegiosunivap.Professor p ON d.Professor_registro = p.registro WHERE ad.Aluno_matricula = ? AND d.ano = ?;";
+
+      this.banco.query(SQL, params, function (error, result) {
+        if (error) {
+          console.log(error);
+          reject(error);
+        } else {
+          resolve(result);
+        }
+      });
+    });
+    return operacaoAssincrona;
+  }
+
+  async readDisciplinaAluno_ano_antigo() {
+    const operacaoAssincrona = new Promise((resolve, reject) => {
+      const aluno = this.getAluno();
+      const matricula = aluno.matricula;
+
+      const ano = this.getAno();
+
+      let params = [matricula, ano];
+      
+      let SQL = "SELECT  d.idDisciplina, d.nome AS nome_disciplina, d.serie, d.ano, d.linguagem, d.codigo_unico, p.nome AS nome_professor FROM  colegiosunivap.Aluno_Disciplina ad INNER JOIN colegiosunivap.Disciplina d ON ad.Disciplina_idDisciplina = d.idDisciplina INNER JOIN colegiosunivap.Professor p ON d.Professor_registro = p.registro WHERE ad.Aluno_matricula = ? AND d.ano < ?;";
 
       this.banco.query(SQL, params, function (error, result) {
         if (error) {
@@ -288,5 +337,12 @@ module.exports = class Disciplina {
   }
   getProfessor() {
     return this.Professor;
+  }
+
+  setAluno(newAluno){
+    this.Aluno = newAluno;
+  }
+  getAluno(){
+    return this.Aluno;
   }
 };

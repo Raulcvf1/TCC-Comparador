@@ -22,7 +22,7 @@ function getExecutionCommands(file, inputs, output, language) {
     switch (language) {
         case 'csharp':
             const exeFileCs = file.replace('.cs', '.exe');
-            const compileCommand = `"C:\\Windows\\Microsoft.NET\\Framework\\v4.0.30319\\csc.exe" ${file}`;
+            const compileCommand = `csc ${file}`;
             const executeCommand = `"${exeFileCs}" < ${inputs} > ${output}`;
             return { compileCommand, executeCommand };
         case 'python':

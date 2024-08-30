@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="pt-BR" style="overflow-y: scroll; overscroll-behavior-y: none; font-size: 16px;">
+<head>
+    <meta charset="utf-8">
+    <title>Feira Técnica</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="../css/nav.css">
+    <link rel="stylesheet" href="../css/search.css">
+</head>
+
+<body class="body-style">
+    <nav class="nav-style">
+        <div class="sidebar-header-style">
+            <div class="d-flex justify-content-center">
+                <a class="logo-wrapper-style" style="color: white; text-decoration: none;">
+                    <img class="logo-img" src="../img/univap.png" alt="Logo">
+                </a>
+            </div>
+
+            <button class="toggle-btn-style" id="btnSide">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-caret-right" viewBox="0 0 16 16" style="color: white;">
+                    <path d="M6 12.796V3.204L11.481 8zm.659.753 5.48-4.796a1 1 0 0 0 0-1.506L6.66 2.451C6.011 1.885 5 2.345 5 3.204v9.592a1 1 0 0 0 1.659.753"/>
+                </svg>
+            </button>
+        </div>
+
+        <div class="sidebar-links-style">
+            <a class="link-style" style="color: white; text-decoration: none;" href="home.html" data-bs-toggle="home" title="Acessar Home">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-house-door" viewBox="0 0 16 16">
+                    <path d="M8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4.5a.5.5 0 0 0 .5-.5v-4h2v4a.5.5 0 0 0 .5.5H14a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293zM2.5 14V7.707l5.5-5.5 5.5 5.5V14H10v-4a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5v4z"/>
+                </svg>
+                <span class="hidden-style">Home</span>
+            </a>
+            <a class="link-style" style="color: white; text-decoration: none;" href="disciplina.html" data-bs-toggle="disciplina" title="Acessar Disciplina">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-folder" viewBox="0 0 16 16">
+                    <path d="M.54 3.87.5 3a2 2 0 0 1 2-2h3.672a2 2 0 0 1 1.414.586l.828.828A2 2 0 0 0 9.828 3h3.982a2 2 0 0 1 1.992 2.181l-.637 7A2 2 0 0 1 13.174 14H2.826a2 2 0 0 1-1.991-1.819l-.637-7a2 2 0 0 1 .342-1.31zM2.19 4a1 1 0 0 0-.996 1.09l.637 7a1 1 0 0 0 .995.91h10.348a1 1 0 0 0 .995-.91l.637-7A1 1 0 0 0 13.81 4zm4.69-1.707A1 1 0 0 0 6.172 2H2.5a1 1 0 0 0-1 .981l.006.139q.323-.119.684-.12h5.396z"/>
+                </svg>
+                <span class="hidden-style">Disciplina</span>
+            </a>
+            <a class="link-style link-active" style="color: white; text-decoration: none;" href="atividade.html" data-bs-toggle="atividade" title="Acessar Atividade">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-file-earmark-check" viewBox="0 0 16 16">
+                    <path d="M10.854 7.854a.5.5 0 0 0-.708-.708L7.5 9.793 6.354 8.646a.5.5 0 1 0-.708.708l1.5 1.5a.5.5 0 0 0 .708 0z"/>
+                    <path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2M9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5z"/>
+                </svg>
+                <span class="hidden-style">Atividade</span>
+            </a>
+            <a class="link-style" style="color: white; text-decoration: none;" data-bs-toggle="desafio" title="Acessar Desafio">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-rocket-takeoff" viewBox="0 0 16 16">
+                    <path d="M9.752 6.193c.599.6 1.73.437 2.528-.362s.96-1.932.362-2.531c-.599-.6-1.73-.438-2.528.361-.798.8-.96 1.933-.362 2.532"/>
+                    <path d="M15.811 3.312c-.363 1.534-1.334 3.626-3.64 6.218l-.24 2.408a2.56 2.56 0 0 1-.732 1.526L8.817 15.85a.51.51 0 0 1-.867-.434l.27-1.899c.04-.28-.013-.593-.131-.956a9 9 0 0 0-.249-.657l-.082-.202c-.815-.197-1.578-.662-2.191-1.277-.614-.615-1.079-1.379-1.275-2.195l-.203-.083a10 10 0 0 0-.655-.248c-.363-.119-.675-.172-.955-.132l-1.896.27A.51.51 0 0 1 .15 7.17l2.382-2.386c.41-.41.947-.67 1.524-.734h.006l2.4-.238C9.005 1.55 11.087.582 12.623.208c.89-.217 1.59-.232 2.08-.188.244.023.435.06.57.093q.1.026.16.045c.184.06.279.13.351.295l.029.073a3.5 3.5 0 0 1 .157.721c.055.485.051 1.178-.159 2.065m-4.828 7.475.04-.04-.107 1.081a1.54 1.54 0 0 1-.44.913l-1.298 1.3.054-.38c.072-.506-.034-.993-.172-1.418a9 9 0 0 0-.164-.45c.738-.065 1.462-.38 2.087-1.006M5.205 5c-.625.626-.94 1.351-1.004 2.09a9 9 0 0 0-.45-.164c-.424-.138-.91-.244-1.416-.172l-.38.054 1.3-1.3c.245-.246.566-.401.91-.44l1.08-.107zm9.406-3.961c-.38-.034-.967-.027-1.746.163-1.558.38-3.917 1.496-6.937 4.521-.62.62-.799 1.34-.687 2.051.107.676.483 1.362 1.048 1.928.564.565 1.25.941 1.924 1.049.71.112 1.429-.067 2.048-.688 3.079-3.083 4.192-5.444 4.556-6.987.183-.771.18-1.345.138-1.713a3 3 0 0 0-.045-.283 3 3 0 0 0-.3-.041Z"/>
+                    <path d="M7.009 12.139a7.6 7.6 0 0 1-1.804-1.352A7.6 7.6 0 0 1 3.794 8.86c-1.102.992-1.965 5.054-1.839 5.18.125.126 3.936-.896 5.054-1.902Z"/>
+                </svg>
+                <span class="hidden-style">Desafio</span>
+            </a>
+        </div>
+
+        <div class="sidebar-bottom">
+
+            <div class="user-profile-style">
+                <div class="user-avatar-style">
+                    <img src="../img/user2.png" alt="">
+                </div>
+                <div class="user-details-style hidden-style">
+                    <p class="username-style" id="txtNome_onload"></p>
+                    <p class="user-email-style" id="txtEmail_onload"></p>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="mt-4 p-5 text-white rounded" style="background: #333;">
+                    <button type="button" class="btn btn-primary">
+                        <p class="h1" id="lblNomeAtividade"></p>
+                    </button>
+                </div> 
+                
+                <div class="mt-4 p-5 text-white rounded " style="background: #333;">
+                    <p class="h2">Questões</p>
+                    <br>
+
+                    <div id="listGroup" class="list-group">
+
+                    </div>
+                    
+                    <!-- AREA ONDE QUERO OS LIST GROUPS -->
+
+
+                </div>    
+            </div>
+            <div class="col-sm-9">
+                <div class="mt-4 p-5 text-white rounded scrollspy-item" style="background: #333;">
+                    <div class="row">
+                        <div class="col">
+                            <h2 class="">Output</h2>
+
+                            <div class="btn-group d-flex w-100 mt-3 mb-3">
+                                <button type="button" class="btn btn-success w-100" id="btnEnviar" data-bs-toggle="modal" data-bs-toggle="enviarQuestao" title="Submeter Questão" data-bs-target="#modalEntregaCreate">
+                                    Enviar
+                                </button>
+                            </div>
+
+                            <table class="table table-hover table-bordered">
+                                <thead class="table-light">
+                                    <tr>
+                                    <th>Resultado</th>
+                                    <th>Mensagem</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="table-success" id="corTabela">
+                                        <td id="lblStatus"></td>
+                                        <td id="lblMensagem"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DA QUESTAO -->
+    <div class="modal fade" id="modalEntregaCreate" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalEntregaCreate" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header text-dark">
+                    <h4 class="modal-title" id="modalQuestaoLabel1">Selecionar Arquivo</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <!-- Modal body -->
+                <div class="modal-body text-dark">
+                    <div class="mb-3">
+                        <input class="form-control" type="file" id="formFile">
+                    </div>
+                </div>
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success" id="btnEntregaCreate">Enviar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="js/atividade/atividade_onload.js"></script>
+    <script type="text/javascript" src="js/atividade/atividade_create_entrega.js"></script>
+    <script>
+        const sidebarBtn = document.getElementById("btnSide");
+        const bodyElement = document.body;
+
+        sidebarBtn.addEventListener("click", () => {
+            bodyElement.classList.toggle("body-active");
+        });
+
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="editar"], [data-bs-toggle="excluir"], [data-bs-toggle="createQuestao"], [data-bs-toggle="deleteQuestao"], [data-bs-toggle="createInput"], [data-bs-toggle="putInput"], [data-bs-toggle="deleteInput"], [data-bs-toggle="saveInput"], [data-bs-toggle="enviarQuestao"], [data-bs-toggle="enviarTeste"], [data-bs-toggle="home"], [data-bs-toggle="disciplina"], [data-bs-toggle="atividade"], [data-bs-toggle="desafio"], [data-bs-toggle="configuracao"]'));
+
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+
+    </script>
+</body>
+</html>

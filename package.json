@@ -13,7 +13,7 @@
     "diff": "^4.0.2",
     "esprima": "^4.0.1",
     "express": "^4.17.1",
-    "express-fileupload": "^1.2.1",
+    "express-fileupload": "^1.5.1",
     "formidable": "^3.5.1",
     "jsonwebtoken": "^9.0.2",
     "md5": "^2.3.0",
