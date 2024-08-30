@@ -1,10 +1,13 @@
 window.onload = function() { 
     // Recupera o objeto do localStorage
+    var aluno = JSON.parse(localStorage.getItem("jsonAluno"));
     const atividade = JSON.parse(localStorage.getItem("jsonAtividade"));
 
     if (atividade && atividade.nome) {
         // Atribui o nome da atividade ao elemento <p> com id lblNomeAtividade
         document.getElementById("lblNomeAtividade").textContent = atividade.nome;
+
+        document.getElementById("txtNome_onload").textContent = aluno.nome;
         document.getElementById("txtEmail_onload").textContent = aluno.email;
 
         fetch_get_selectQuestaoAtividade();

@@ -1,6 +1,7 @@
 window.onload = function() {
     // Recupera o objeto do localStorage
     var disciplina = JSON.parse(localStorage.getItem("jsonDisciplina"));
+    var aluno = JSON.parse(localStorage.getItem("jsonAluno"));
 
     // Verifica se o objeto foi encontrado e se possui o atributo nome
     if (disciplina && disciplina.nome) {
@@ -8,6 +9,8 @@ window.onload = function() {
         document.getElementById("lblNomeDisciplina").textContent = disciplina.nome;
         document.getElementById("lblCodeDisciplina").textContent = "Código: " + disciplina.codigoUnico;
         document.getElementById("lblCodeExpand").textContent = disciplina.codigoUnico;
+
+        document.getElementById("txtNome_onload").textContent = aluno.nome;
         document.getElementById("txtEmail_onload").textContent = aluno.email;
 
         fetch_get_selectDisciplinaAtividade(disciplina.idDisciplina);
