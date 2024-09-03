@@ -8,6 +8,15 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="../css/nav.css">
     <link rel="stylesheet" href="../css/search.css">
+    <style>
+        .table td kbd {
+            margin: 10px;
+        }
+
+        .table {
+            font-size: 25px; /* Define o tamanho da fonte para toda a tabela */
+        }
+    </style>
 </head>
 
 <body class="body-style">
@@ -83,7 +92,7 @@
                     <p class="h2">Questões</p>
                     <br>
 
-                    <div id="listGroup" class="list-group">
+                    <div id="listGroup" class="list-group" style="font-size: 20px;" >
 
                     </div>
                     
@@ -96,25 +105,91 @@
                 <div class="mt-4 p-5 text-white rounded scrollspy-item" style="background: #333;">
                     <div class="row">
                         <div class="col">
-                            <h2 class="">Output</h2>
 
-                            <div class="btn-group d-flex w-100 mt-3 mb-3">
-                                <button type="button" class="btn btn-success w-100" id="btnEnviar" data-bs-toggle="modal" data-bs-toggle="enviarQuestao" title="Submeter Questão" data-bs-target="#modalEntregaCreate">
-                                    Enviar
-                                </button>
+                            <div class="row mb-3">
+                                <div class="col-5">
+                                    <h2 class="">Código</h2>
+
+                                    <div class="form-floating">
+                                        <textarea class="form-control" placeholder="" id="" style="height: 400px; font-size: 30px;" disabled>
+
+    def soma(a, b):
+        return a + b
+
+    x = int(input())
+    y = int(input())
+
+    print(soma(x, y))
+                                        </textarea>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <h2 class="">Output</h2>
+                            
+                                    <div class="btn-group d-flex w-100 mt-3 mb-3">
+                                        <button type="button" class="btn btn-success w-100" id="btnEnviar" data-bs-toggle="modal" data-bs-toggle="enviarQuestao" title="Submeter Questão" data-bs-target="#modalEntregaCreate" style="font-size: 30px;">
+                                            Enviar
+                                        </button>
+                                    </div>
+        
+                                    <table class="table table-hover table-bordered">
+                                        <thead class="table-light">
+                                            <tr>
+                                            <th>Resultado</th>
+                                            <th>Mensagem</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr class="table-success" id="corTabela">
+                                                <td id="lblStatus"></td>
+                                                <td id="lblMensagem"></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
                             </div>
+
+                            <h2 class="mb-3">Comandos Utilizados</h2>
 
                             <table class="table table-hover table-bordered">
                                 <thead class="table-light">
                                     <tr>
-                                    <th>Resultado</th>
-                                    <th>Mensagem</th>
+                                    <th>Linguagem</th>
+                                    <th>Comandos</th>
+                                    <th>Método de Execução</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr class="table-success" id="corTabela">
-                                        <td id="lblStatus"></td>
-                                        <td id="lblMensagem"></td>
+                                    <tr class="table-primary">
+                                        <td>Python</td>
+                                        <td>python <kbd class="bg-primary">questao.py</kbd> < <kbd class="bg-success">entradas</kbd> > <kbd class="bg-danger">saídas</kbd> </td>                                              
+                                        <td>Interpretador (python)</td>
+                                    </tr>
+                                    <tr class="table-primary">
+                                        <td>C#</td>
+                                        <td>
+                                            cd <kbd class="bg-secondary">diretório</kbd><br><br>
+                                            csc <kbd class="bg-warning text-dark">questao.cs</kbd> => <kbd class="bg-primary">questao.exe</kbd><br><br>
+                                            <kbd class="bg-primary" style="margin-left: 0px;">questao.exe</kbd> < <kbd class="bg-success">entradas</kbd> > <kbd class="bg-danger">saídas</kbd>
+                                        </td>                                              
+                                        <td>Compilador (csc)</td>
+                                    </tr>
+                                    <tr class="table-primary">
+                                        <td>Java</td>
+                                        <td>
+                                            javac <kbd class="bg-warning text-dark">questao.java</kbd> => <kbd class="bg-primary">questao.class</kbd><br><br>
+                                            java -cp <kbd class="bg-primary">questao.class</kbd> < <kbd class="bg-success">entradas</kbd> > <kbd class="bg-danger">saídas</kbd>
+                                        </td>                                              
+                                        <td>Compilador (javac)</td>
+                                    </tr>
+                                    <tr class="table-primary">
+                                        <td>C</td>
+                                        <td>
+                                            g++ <kbd class="bg-warning text-dark">questao.cpp</kbd> -o <kbd class="bg-primary">questao.exe</kbd><br><br>
+                                            <kbd class="bg-primary" style="margin-left: 0px;">questao.exe</kbd> < <kbd class="bg-success">entradas</kbd> > <kbd class="bg-danger">saídas</kbd>
+                                        </td>                                              
+                                        <td>Compilador (g++)</td>
                                     </tr>
                                 </tbody>
                             </table>
