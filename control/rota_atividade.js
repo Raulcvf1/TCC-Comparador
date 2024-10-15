@@ -207,6 +207,53 @@ module.exports = function (app, banco) {
 
     });
 
+        /*
+    get ATIVIDADE POR DISCIPLINA ALUNO
+    */
+    
+    app.get("/atividade/disciplina/aluno/:id/", (request, response) => {
+
+        const jwt = new JwtToken();
+        const token = request.headers.authorization;
+        const tokenValido = jwt.validarToken(token);
+
+        if (tokenValido.status == true) {
+
+            const Disciplina_idDisciplina = request.params.id;
+
+            const atividade = new Atividade(banco);
+
+            const disciplina = new Disciplina(banco);
+            disciplina.setIdDisciplina(Disciplina_idDisciplina);
+
+            atividade.setDisciplina(disciplina);
+
+            atividade.readAtividadeDisciplina_aluno()
+            .then((resultadosBanco) => {
+                const resposta = {
+                status: true,
+                msg: "executado com sucesso",
+                dados: resultadosBanco,
+                };
+                response.status(200).send(resposta);
+            })
+            .catch((erro) => {
+                const resposta = {
+                status: false,
+                msg: "erro ao executar",
+                codigo: "005",
+                dados: erro,
+                };
+                response.status(200).send(resposta);
+            });
+
+        }else{
+            return response.status(401).json({ message: "Token inválido ou não fornecido" });
+        }
+
+    });
+
+
     
 
     /*
@@ -339,6 +386,47 @@ module.exports = function (app, banco) {
                 dados: {
                     id: atividade.getIdAtividade(),
                     nome: atividade.getNome(),
+                    status: atividade.getStatus()
+                },
+                };
+                response.status(200).send(resposta);
+
+            }).catch((erro) => {
+                console.error("Error retrieving users:", erro);
+            });
+        
+        }else{
+            return response.status(401).json({ message: "Token inválido ou não fornecido" });
+        }
+    });
+
+    /*
+    update status
+    */
+    app.put("/atividade/status/:id", (request, response) => {
+
+        const jwt = new JwtToken();
+        const token = request.headers.authorization;
+        const tokenValido = jwt.validarToken(token);
+
+        if (tokenValido.status == true) {
+
+            const id = request.params.id;
+            const status = request.body.status;
+
+            const atividade = new Atividade(banco);
+
+            atividade.setIdAtividade(id);
+            atividade.setStatus(status);
+
+            atividade.update_status()
+            .then((resultadosBanco) => {
+                const resposta = {
+                status: true,
+                msg: "Executado com sucesso",
+                codigo: "004",
+                dados: {
+                    id: atividade.getIdAtividade(),
                     status: atividade.getStatus()
                 },
                 };

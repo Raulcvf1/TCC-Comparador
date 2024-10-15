@@ -75,8 +75,34 @@ window.onload = function() {
 
             jumbotron.style = "background: #333;"
 
+            const row1 = document.createElement('div');
+            row1.className = "row";
+
+            const col1 = document.createElement('div');
+            col1.className = "col";
+
             const title = document.createElement('h3');
             title.textContent = atividade.nome;
+
+            const col2 = document.createElement('div');
+            col2.className = "col justify-content-end d-flex ";
+
+            const btnPut = document.createElement('button');
+
+            if(atividade.status == 0){
+                btnPut.value = 1;
+                btnPut.className = "btn btn-danger";
+                btnPut.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="40" height="32" fill="currentColor" class="bi bi-lock" viewBox="0 0 16 16"><path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2m3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2M5 8h6a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1"/></svg>`; 
+            }
+            else{
+                btnPut.value = 0;
+                btnPut.className = "btn btn-success";
+                btnPut.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="40" height="32" fill="currentColor" class="bi bi-unlock" viewBox="0 0 16 16"><path d="M11 1a2 2 0 0 0-2 2v4a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h5V3a3 3 0 0 1 6 0v4a.5.5 0 0 1-1 0V3a2 2 0 0 0-2-2M3 8a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V9a1 1 0 0 0-1-1z"/></svg>`;
+            }
+
+            btnPut.onclick = () => {
+                statusAtividade_put(atividade.idAtividade, btnPut.value);
+            };
 
             const description4 = document.createElement('p');
             description4.textContent = "Acesse a " + atividade.nome + " clicando no botão abaixo";
@@ -85,10 +111,14 @@ window.onload = function() {
             button.className = "btn btn-primary";
             button.textContent = "Acessar";
             button.onclick = () => {
-                handleDisciplinaClick(atividade.idAtividade, atividade.nome, atividade.status, atividade.quantidade_exercicios);
+                handleDisciplinaClick(atividade.idAtividade, atividade.nome, atividade.status);
             };
 
-            jumbotron.appendChild(title);
+            col1.appendChild(title);
+            col2.appendChild(btnPut)
+            row1.appendChild(col1);
+            row1.appendChild(col2);
+            jumbotron.appendChild(row1);
             jumbotron.appendChild(description4);
             jumbotron.appendChild(button);
 
@@ -103,14 +133,60 @@ window.onload = function() {
     }
 
     
+    function statusAtividade_put(idAtividade, status){
+        const objJson ={
+            status: status
+        }
+
+        //converte o objeto recebido em um texto json
+        const stringJson = JSON.stringify(objJson);
+
+        //determina a uri do serviço na api
+        const uri = `/atividade/status/${idAtividade}`;
+        
+        const token = localStorage.getItem("token");
+        console.log(token);
+
+        const requisicao_assincrona = fetch(uri, {
+            method: "PUT",
+            body: stringJson,
+            headers: {
+            Accept: "application/json", //Aceita json como resposta da api
+            "Content-Type": "application/json", //Informa que irá enviar para api conteúdo em json
+            authorization: "bearer <" + token + ">", //não envia token pq ainda não está logado
+            },
+        });
+
+        //caso seja retornada uma resposta da api, ela será processada abaixo
+        requisicao_assincrona.then((response) => {
+            return response.text();
+        }).then((jsonResposta) => {
+
+            //converte a resposta da api para um objeto json.
+            const objetoJson = JSON.parse(jsonResposta);
+
+            //caso o status da resposta seja true entra no if
+            if (objetoJson.status == true) {
+                location.reload();
+            } else {
+                //caso o status da resposta não sseja true
+                //escreve a mensagem que veio da api
+                console.log(objetoJson.msg);
+            }
+        });
+        //caso aconteça algum erro o catch é chamado e o erro é apresentado no console do navegador
+        requisicao_assincrona.catch((error) => {
+            console.error("Error:", error);
+        });
+    }
+
     // Função para lidar com o clique na atividade
-    function handleDisciplinaClick(id, nome, status, quantidade) {
+    function handleDisciplinaClick(id, nome, status) {
         // Cria o dicionário com as informações
         const atividadeInfo = {
             idAtividade: id,
             nome: nome,
             status: status,
-            quantidade_exercicios: quantidade,
         };
     
         // Armazena no localStorage

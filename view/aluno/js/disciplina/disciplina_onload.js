@@ -20,7 +20,7 @@ window.onload = function() {
     function fetch_get_selectDisciplinaAtividade(id) {
         // Converte o objeto recebido em um texto json
         // Determina a uri do serviço na API
-        const uri = "/atividade/disciplina/" + id;
+        const uri = "/atividade/disciplina/aluno/" + id;
     
         const token = localStorage.getItem("token");
     

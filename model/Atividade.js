@@ -72,6 +72,27 @@ module.exports = class Disciplina {
       });
       return operacaoAssincrona;
     }
+
+    async readAtividadeDisciplina_aluno() {
+      const operacaoAssincrona = new Promise((resolve, reject) => {
+        const disciplina = this.getDisciplina();
+        const Disciplina_idDisciplina = disciplina.idDisciplina;
+  
+        let params = [Disciplina_idDisciplina];
+        
+        let SQL = "SELECT idAtividade, nome, status FROM colegiosunivap.atividade WHERE Disciplina_idDisciplina = ? AND status = 1;";
+  
+        this.banco.query(SQL, params, function (error, result) {
+          if (error) {
+            console.log(error);
+            reject(error);
+          } else {
+            resolve(result);
+          }
+        });
+      });
+      return operacaoAssincrona;
+    }
   
     async update() {
       const operacaoAssincrona = new Promise((resolve, reject) => {
@@ -84,6 +105,26 @@ module.exports = class Disciplina {
         const params = [nome, status, Disciplina_idDisciplina, idAtividade];
   
         let sql = "UPDATE colegiosunivap.atividade SET nome = ?, status = ?, Disciplina_idDisciplina = ? WHERE idAtividade = ?;";
+  
+        this.banco.query(sql, params, function (error, result) {
+          if (error) {
+            reject(error);
+          } else {
+            resolve(result);
+          }
+        });
+      });
+      return operacaoAssincrona;
+    }
+
+    async update_status() {
+      const operacaoAssincrona = new Promise((resolve, reject) => {
+        const idAtividade = this.getIdAtividade();
+        const status = this.getStatus();
+  
+        const params = [status, idAtividade];
+  
+        let sql = "UPDATE colegiosunivap.atividade SET status = ? WHERE idAtividade = ?;";
   
         this.banco.query(sql, params, function (error, result) {
           if (error) {

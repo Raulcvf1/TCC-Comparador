@@ -9,9 +9,9 @@ function onclick_btnAtividade() {
   var disciplina = JSON.parse(localStorage.getItem("jsonDisciplina"));
       
   const objJson = {
-      nome: v_nome,
-      status: 0,
-      Disciplina_idDisciplina: disciplina.idDisciplina
+    nome: v_nome,
+    status: 0,
+    Disciplina_idDisciplina: disciplina.idDisciplina
   };
 
   fetch_post_createAtividade(objJson);

@@ -46,14 +46,6 @@
                 </svg>
                 <span class="hidden-style">Atividade</span>
             </a>
-            <a class="link-style" style="color: white; text-decoration: none;" data-bs-toggle="desafio" title="Acessar Desafio">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-rocket-takeoff" viewBox="0 0 16 16">
-                    <path d="M9.752 6.193c.599.6 1.73.437 2.528-.362s.96-1.932.362-2.531c-.599-.6-1.73-.438-2.528.361-.798.8-.96 1.933-.362 2.532"/>
-                    <path d="M15.811 3.312c-.363 1.534-1.334 3.626-3.64 6.218l-.24 2.408a2.56 2.56 0 0 1-.732 1.526L8.817 15.85a.51.51 0 0 1-.867-.434l.27-1.899c.04-.28-.013-.593-.131-.956a9 9 0 0 0-.249-.657l-.082-.202c-.815-.197-1.578-.662-2.191-1.277-.614-.615-1.079-1.379-1.275-2.195l-.203-.083a10 10 0 0 0-.655-.248c-.363-.119-.675-.172-.955-.132l-1.896.27A.51.51 0 0 1 .15 7.17l2.382-2.386c.41-.41.947-.67 1.524-.734h.006l2.4-.238C9.005 1.55 11.087.582 12.623.208c.89-.217 1.59-.232 2.08-.188.244.023.435.06.57.093q.1.026.16.045c.184.06.279.13.351.295l.029.073a3.5 3.5 0 0 1 .157.721c.055.485.051 1.178-.159 2.065m-4.828 7.475.04-.04-.107 1.081a1.54 1.54 0 0 1-.44.913l-1.298 1.3.054-.38c.072-.506-.034-.993-.172-1.418a9 9 0 0 0-.164-.45c.738-.065 1.462-.38 2.087-1.006M5.205 5c-.625.626-.94 1.351-1.004 2.09a9 9 0 0 0-.45-.164c-.424-.138-.91-.244-1.416-.172l-.38.054 1.3-1.3c.245-.246.566-.401.91-.44l1.08-.107zm9.406-3.961c-.38-.034-.967-.027-1.746.163-1.558.38-3.917 1.496-6.937 4.521-.62.62-.799 1.34-.687 2.051.107.676.483 1.362 1.048 1.928.564.565 1.25.941 1.924 1.049.71.112 1.429-.067 2.048-.688 3.079-3.083 4.192-5.444 4.556-6.987.183-.771.18-1.345.138-1.713a3 3 0 0 0-.045-.283 3 3 0 0 0-.3-.041Z"/>
-                    <path d="M7.009 12.139a7.6 7.6 0 0 1-1.804-1.352A7.6 7.6 0 0 1 3.794 8.86c-1.102.992-1.965 5.054-1.839 5.18.125.126 3.936-.896 5.054-1.902Z"/>
-                </svg>
-                <span class="hidden-style">Desafio</span>
-            </a>
         </div>
 
         <div class="sidebar-bottom">
@@ -103,7 +95,6 @@
                         </button>
                     </div>
 
-
                 </div> 
                 
                 <div class="mt-4 p-5 text-white rounded " style="background: #333;">
@@ -131,57 +122,68 @@
                             </svg>
                         </button>
                     </div>
-                </div>    
+                </div>
+                
+                <div class="mt-4 p-5 text-white rounded scrollspy-item" style="background: #333;">
+
+                    <h2 class="mb-3">Entrada</h2>
+
+                    <div id="listGroupEntrada" class="list-group mb-3">
+                        
+                    </div>
+
+                    <div class="form-floating">
+                        <textarea class="form-control" id="txtEntrada" style="width: 100%; height: 120px" disabled></textarea>
+                    </div>
+        
+                    <div class="btn-group d-flex w-100 mt-3 mb-3">
+                        <button type="submit" class="btn btn-primary w-50" id="btnUploadInput" data-bs-toggle="modal" data-bs-toggle="createInput" title="Adicionar Input" data-bs-target="#modalEntradaCreate">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+                            </svg>
+                        </button>
+                        <button type="button" class="btn btn-danger w-50" id="btnRodarSimulacao" data-bs-toggle="modal" data-bs-toggle="deleteInput" title="Excluir Input" data-bs-target="#modalEntradaDelete">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
+                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
             </div>
             <div class="col-sm-9">
                 <div class="mt-4 p-5 text-white rounded scrollspy-item" style="background: #333;">
                     <div class="row">
                         <div class="col">
-                            <h2>Script</h2>
-                            <div class="mt-4 p-5 text-white rounded scrollspy-item" style="background: #1a1a1a" id="lblQuestao">
+                            <h2>Código da Questão</h2>
+                            <div class="mt-4 p-5 text-white rounded scrollspy-item" style="background: #1a1a1a; font-size: 24px;" id="lblQuestao">
                                 <!-- CONTEUDO DO ARQUIVO PROFESSOR -->
                             </div>
                         </div>
-                        <div class="col">
-                            <h2>Input</h2>
-                            <div class="mt-4 p-5 text-white rounded scrollspy-item" style="background: #1a1a1a;">
 
-                                <div id="listGroupEntrada" class="list-group mb-3">
-                                    
-                                </div>
+                    </div>
+                </div>
+                <div class="row">
 
-                                <div class="form-floating">
-                                    <textarea class="form-control" id="txtEntrada" style="width: 100%; height: 120px" disabled></textarea>
-                                </div>
-                    
-                                <div class="btn-group d-flex w-100 mt-3 mb-3">
-                                    <button type="submit" class="btn btn-primary w-50" id="btnUploadInput" data-bs-toggle="modal" data-bs-toggle="createInput" title="Adicionar Input" data-bs-target="#modalEntradaCreate">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
-                                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
-                                            <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
-                                        </svg>
-                                    </button>
-                                    <button type="button" class="btn btn-danger w-50" id="btnRodarSimulacao" data-bs-toggle="modal" data-bs-toggle="deleteInput" title="Excluir Input" data-bs-target="#modalEntradaDelete">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
-                                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
-                                            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
-                                        </svg>
-                                    </button>
-                                </div>
-                            </div>
-
-                            <h2 class="mt-3">Output</h2>
-
-                            <div class="mt-4 p-5 text-white rounded scrollspy-item" style="background: #1a1a1a;">
-                                <div class="form-floating">
-                                    <textarea class="form-control" id="txtSaida" style="width: 100%; height: 120px" disabled></textarea>
-                                </div>
-                                <div class="btn-group d-flex w-100 mt-3">
-                                    <button type="button" class="btn btn-success w-100" id="btnSimlucao" data-bs-toggle="runScript" title="Rodar Simulação">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-caret-right-fill" viewBox="0 0 16 16">
-                                            <path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
-                                        </svg>
-                                    </button>
+                    <div class="col">
+                        <div class="mt-4 p-5 text-white rounded scrollspy-item" style="background: #333;">
+                            <div class="row">
+                                <div class="col">
+        
+                                    <h2 class="">Saídas</h2>
+    
+                                    <div class="form-floating">
+                                        <textarea class="form-control" id="txtSaida" style="width: 100%; height: 120px" disabled></textarea>
+                                    </div>
+                                    <div class="btn-group d-flex w-100 mt-3">
+                                        <button type="button" class="btn btn-success w-100" id="btnSimlucao" data-bs-toggle="runScript" title="Rodar Simulação">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-caret-right-fill" viewBox="0 0 16 16">
+                                                <path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
+                                            </svg>
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
