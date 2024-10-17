@@ -33,7 +33,7 @@ function getExecutionCommands(file, inputs, output, language) {
             const exeFileCpp = file.replace('.cpp', '');
             return {
                 compileCommand: `g++ ${file} -o ${exeFileCpp}`,
-                executeCommand: `${exeFileCpp} < ${inputs} > ${output}`
+                executeCommand: `./${exeFileCpp} < ${inputs} > ${output}`
             };
         case 'java':
             const classFile = file.replace('.java', '');

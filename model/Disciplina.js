@@ -13,6 +13,9 @@ module.exports = class Disciplina {
     };
     this.Aluno = {
       matricula: null,
+    };
+    this.Atividade = {
+      idAtividade: null,
     }
   }
 
@@ -200,6 +203,87 @@ module.exports = class Disciplina {
     return operacaoAssincrona;
   }
 
+  async read_notaAluno() {
+    const aluno = this.getAluno();
+    const matricula = aluno.matricula;
+
+    const atividade = this.getAtividade();
+    const idAtividade = atividade.idAtividade;
+
+    const idDisciplina = this.getIdDisciplina();
+    let SQL = "";
+    let params = [];
+
+    if (idAtividade) {
+        // Consulta para retornar notas, caminho da entrega e outros detalhes de uma atividade específica
+        SQL = `
+            SELECT 
+                q.idQuestao,
+                q.nome AS nomeQuestao,
+                ROUND(e.nota, 0) AS nota,
+                al.nome AS nomeAluno,
+                al.matricula,
+                al.serie,
+                al.turma,
+                a.nome AS nomeAtividade,
+                e.path_entrega
+            FROM 
+                Questao q
+            JOIN 
+                Entrega e ON q.idQuestao = e.Questao_idQuestao
+            JOIN 
+                Aluno al ON e.Aluno_matricula = al.matricula
+            JOIN 
+                Atividade a ON q.Atividade_idAtividade = a.idAtividade
+            WHERE 
+                e.Aluno_matricula = ? 
+                AND q.Atividade_idAtividade = ? 
+                AND a.Disciplina_idDisciplina = ?;
+        `;
+        params = [matricula, idAtividade, idDisciplina];
+    } else {
+        // Consulta para média das notas por atividade
+        SQL = `
+            SELECT 
+                a.idAtividade,
+                a.nome AS nomeAtividade,
+                ROUND(AVG(e.nota), 0) AS mediaNota,
+                al.nome AS nomeAluno,
+                al.matricula,
+                al.serie,
+                al.turma
+            FROM 
+                Atividade a
+            JOIN 
+                Questao q ON a.idAtividade = q.Atividade_idAtividade
+            JOIN 
+                Entrega e ON q.idQuestao = e.Questao_idQuestao
+            JOIN 
+                Aluno al ON e.Aluno_matricula = al.matricula
+            WHERE 
+                e.Aluno_matricula = ? 
+                AND a.Disciplina_idDisciplina = ?
+            GROUP BY 
+                a.idAtividade, a.nome, al.nome, al.matricula, al.serie, al.turma;
+        `;
+        params = [matricula, idDisciplina];
+    }
+
+    const operacaoAssincrona = new Promise((resolve, reject) => {
+        this.banco.query(SQL, params, function (error, result) {
+            if (error) {
+                console.log(error);
+                reject(error);
+            } else {
+                resolve(result);
+            }
+        });
+    });
+
+    return operacaoAssincrona;
+  }
+
+
   async update() {
     const operacaoAssincrona = new Promise((resolve, reject) => {
       const idDisciplina = this.getIdDisciplina();
@@ -344,5 +428,12 @@ module.exports = class Disciplina {
   }
   getAluno(){
     return this.Aluno;
+  }
+
+  setAtividade(newAtividade){
+    this.Atividade = newAtividade;
+  }
+  getAtividade(){
+    return this.Atividade;
   }
 };

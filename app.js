@@ -35,12 +35,11 @@ app.post('/compare', compareController);
 app.post('/uploadProfessor', compareProfessor);
 app.post('/conteudoProfessor', rota_conteudo);
 
-var banco = mysql.createPool({
-    connectionLimit: 128,
+var banco = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: '',
-    database: 'colegiosunivap'
+    database: 'colegiosUnivap'
 });
 
 rota_upload_foto(app, banco);

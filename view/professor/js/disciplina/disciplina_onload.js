@@ -22,7 +22,6 @@ window.onload = function() {
         fetch_get_selectDisciplinaAtividade(disciplina.idDisciplina);
     }
 
-
     function fetch_get_selectDisciplinaAtividade(id) {
         // Converte o objeto recebido em um texto json
         // Determina a uri do serviço na API
@@ -50,6 +49,7 @@ window.onload = function() {
                 // Caso o status da resposta seja true, entra no if
                 if (jsonResposta.status == true) {
                     createAtividadeJumbotrons(jsonResposta.dados);
+                    populateComboBoxAtividade(jsonResposta.dados)
                 } else {
                     // Caso o status da resposta não seja true
                     // Escreve a mensagem que veio da API
@@ -59,6 +59,32 @@ window.onload = function() {
             .catch((error) => {
                 console.error("Error:", error);
             });
+    }
+
+    // Função para popular a comboBoxAluno com os valores retornados
+    function populateComboBoxAluno(alunos) {
+        const comboBoxAluno = document.getElementById("comboBoxAluno");
+        comboBoxAluno.innerHTML = '<option selected>Selecione o nome do Aluno</option>'; // Limpa e define a opção padrão
+
+        alunos.forEach(aluno => {
+            const option = document.createElement("option");
+            option.value = aluno.matricula; // O value será a matrícula do aluno
+            option.textContent = aluno.nome; // O texto será o nome do aluno
+            comboBoxAluno.appendChild(option);
+        });
+    }
+
+    // Função para popular a comboBoxAtividade com os valores retornados
+    function populateComboBoxAtividade(atividades) {
+        const comboBoxAtividade = document.getElementById("comboBoxAtividade");
+        comboBoxAtividade.innerHTML = '<option selected value="null">Selecione a Atividade</option>'; // Limpa e define a opção padrão
+
+        atividades.forEach(atividade => {
+            const option = document.createElement("option");
+            option.value = atividade.idAtividade; // O value será o id da atividade
+            option.textContent = atividade.nome; // O texto será o nome da atividade
+            comboBoxAtividade.appendChild(option);
+        });
     }
 
     // Função para criar os jumbotrons das atividades
@@ -223,6 +249,7 @@ window.onload = function() {
             // Caso o status da resposta seja true, entra no if
             if (jsonResposta.status == true) {
                 populateTable(jsonResposta.dados);
+                populateComboBoxAluno(jsonResposta.dados);
             } else {
                 // Caso o status da resposta não seja true
                 // Escreve a mensagem que veio da API
@@ -233,7 +260,7 @@ window.onload = function() {
             console.error("Error:", error);
         });
     }
-1
+
     function populateTable(disciplinas) {
         const tbody = document.getElementById("disciplina-aluno-tbody");
         tbody.innerHTML = ""; // Limpa o conteúdo existente

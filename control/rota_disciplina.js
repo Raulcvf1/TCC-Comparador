@@ -8,6 +8,7 @@ module.exports = function (app, banco) {
 
     const Professor = require("../model/Professor");
     const Aluno = require("../model/Aluno");
+    const Atividade = require("../model/Atividade");
 
     const fs = require('fs');
     const path = require('path');
@@ -429,6 +430,58 @@ module.exports = function (app, banco) {
             disciplina.setAno(ano);
 
             disciplina.readDisciplinaAluno_ano_antigo()
+            .then((resultadosBanco) => {
+                const resposta = {
+                status: true,
+                msg: "executado com sucesso",
+                dados: resultadosBanco,
+                };
+                response.status(200).send(resposta);
+            })
+            .catch((erro) => {
+                const resposta = {
+                status: false,
+                msg: "erro ao executar",
+                codigo: "005",
+                dados: erro,
+                };
+                response.status(200).send(resposta);
+            });
+
+        }else{
+            return response.status(401).json({ message: "Token inválido ou não fornecido" });
+        }
+
+    });
+
+    /*
+    GET NOTA ALUNO
+    */
+    app.get("/disciplina/nota/:matricula/:idAtividade/:idDisciplina", (request, response) => {
+
+        const jwt = new JwtToken();
+        const token = request.headers.authorization;
+        const tokenValido = jwt.validarToken(token);
+
+        if (tokenValido.status == true) {
+
+            const disciplina = new Disciplina(banco);
+
+            const matricula = request.params.matricula;
+            const idAtividade = request.params.idAtividade | null;
+            const idDisciplina = request.params.idDisciplina
+
+            const aluno = new Aluno(banco);
+            aluno.setMatricula(matricula);
+
+            const atividade = new Atividade(banco);
+            atividade.setIdAtividade(idAtividade);
+
+            disciplina.setAluno(aluno);
+            disciplina.setAtividade(atividade);
+            disciplina.setIdDisciplina(idDisciplina);
+
+            disciplina.read_notaAluno()
             .then((resultadosBanco) => {
                 const resposta = {
                 status: true,

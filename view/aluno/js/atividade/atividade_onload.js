@@ -107,6 +107,9 @@ function processNotaResponse(dados) {
     
         if (nota === 10) {
             updateTable("table-success", "Nota: 10", "Exercício correto");
+            
+            codigoEnviado(dados.path_entrega);
+
         } else if (nota === 0) {
             updateTable("table-danger", "Nota: 0", "Exercício incorreto");
         } else {
@@ -132,4 +135,40 @@ function processNotaResponse(dados) {
         lblMensagem.innerHTML = "";
         btnEnviar.disabled = false;
     }
+}
+
+function codigoEnviado(path){
+
+    const token = localStorage.getItem("token");
+
+    const conteudoPathRequest = {
+        method: "POST",
+        body: JSON.stringify({ path: path }),
+        headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        authorization: "bearer <" + token + ">",
+        },
+    };
+
+    fetch("/conteudo", conteudoPathRequest).then((conteudoResponse) => conteudoResponse.text()).then((conteudoResult) => {
+        console.log("conteudo do arquivo:", conteudoResult);
+
+        const areaCodeEnviado = document.getElementById('areaCodeEnviado');
+        areaCodeEnviado.innerHTML = "";
+        areaCodeEnviado.innerHTML = `
+        <div class="mt-4 p-5 text-white rounded scrollspy-item" style="background: #333;">
+            <div class="row">
+                <div class="col">
+                    <h2>Código Enviado</h2>
+                    <div class="mt-4 p-5 text-white rounded scrollspy-item" style="background: #1a1a1a; font-size: 24px;" id="lblQuestao">
+                        <pre><code>${conteudoResult}</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+        `;
+    }).catch((error) => {
+        console.error("Erro ao carregar conteudo:", error);
+    });
 }

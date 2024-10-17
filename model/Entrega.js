@@ -67,7 +67,7 @@ module.exports = class Entrega {
 
         let params = [Questao_idQuestao, Aluno_matricula];
         
-        let SQL = "SELECT nota FROM colegiosunivap.entrega WHERE Questao_idQuestao = ? AND Aluno_matricula = ?;";
+        let SQL = "SELECT nota, path_entrega FROM colegiosunivap.entrega WHERE Questao_idQuestao = ? AND Aluno_matricula = ?;";
 
         this.banco.query(SQL, params, function (error, result) {
           if (error) {

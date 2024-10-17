@@ -66,7 +66,7 @@ function fetch_delete_deleteQuestao() {
 
                 // Independentemente do resultado da exclusão do caminho, remove jsonAtividade e redireciona
                 localStorage.removeItem("jsonQuestao");
-                window.location.href = "atividadeNew.html";
+                location.reload();
 
             }).catch((error) => {
                 console.error("Erro ao excluir o caminho:", error);
