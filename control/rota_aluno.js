@@ -5,7 +5,7 @@ const Aluno = require("../model/Aluno");
 // de rotas_funcionarios
 module.exports = function (app, banco) {
   
-  const JwtToken = require('../model/jwtToken');
+    const JwtToken = require('../model/jwtToken');
 
     app.post('/aluno/login', (request, response) => {
 
@@ -70,14 +70,18 @@ module.exports = function (app, banco) {
         const nome = request.body.nome;
         const email = request.body.email;
         const senha = request.body.senha;
+        const serie = request.body.serie;
+        const turma = request.body.turma;
     
         const aluno = new Aluno(banco);
         
-        aluno.setCpf(cpf)
         aluno.setMatricula(matricula)
+        aluno.setCpf(cpf);
         aluno.setNome(nome);
         aluno.setEmail(email);
         aluno.setSenha(senha);
+        aluno.setSerie(serie);
+        aluno.setTurma(turma);
 
         aluno.create()
         .then((resultadosBanco) => {

@@ -5,11 +5,12 @@ module.exports = class Aluno {
     constructor(banco) {
         this.banco = banco;
         this.matricula = null;
-        this.cpf=null;
+        this.cpf = null;
         this.nome = null;
         this.email = null;
         this.senha = null;
-
+        this.serie = null;
+        this.turma = null;
     }
 
     async create() {
@@ -19,11 +20,12 @@ module.exports = class Aluno {
             const nome = this.getNome();
             const email = this.getEmail();
             const senha = md5(this.getSenha());
-            
+            const serie = this.getSerie();
+            const turma = this.getTurma();
 
-            const params = [matricula, cpf, nome, email, senha];
+            const params = [matricula, cpf, nome, email, senha, serie, turma];
 
-            let sql = "INSERT INTO aluno (matricula, cpf, nome, email, senha) VALUES (?, ?, ?, ?, ?);";
+            let sql = "INSERT INTO aluno (matricula, cpf, nome, email, senha, serie, turma) VALUES (?, ?, ?, ?, ?, ?, ?);";
 
             this.banco.query(sql, params, function (error, result) {
                 if (error) {
@@ -42,9 +44,9 @@ module.exports = class Aluno {
             let params = [matricula];
             let SQL = "";
             if (matricula == null) {
-                SQL = "SELECT matricula,cpf, nome, email FROM colegiosunivap.aluno;";
+                SQL = "SELECT matricula, cpf, nome, email, serie, turma FROM colegiosunivap.aluno;";
             } else {
-                SQL = "SELECT matricula,cpf, nome, email FROM colegiosunivap.aluno WHERE matricula = ?;";
+                SQL = "SELECT matricula, cpf, nome, email, serie, turma FROM colegiosunivap.aluno WHERE matricula = ?;";
             }
             this.banco.query(SQL, params, function (error, result) {
                 if (error) {
@@ -135,29 +137,47 @@ module.exports = class Aluno {
     getMatricula() {
         return this.matricula
     }
+
     setCpf(newCpf){
-        this.cpf = newCpf
+        this.cpf = newCpf;
     }
     getCpf(){
-        return this.cpf
+        return this.cpf;
     }
+
     setNome(name) {
         this.nome = name;
     }
     getNome() {
         return this.nome;
     }
+
     setEmail(email) {
         this.email = email;
     }
     getEmail() {
         return this.email;
     }
+
     setSenha(senha) {
         this.senha = senha;
     }
     getSenha() {
         return this.senha;
+    }
+
+    setSerie(newSerie){
+        this.serie = newSerie;
+    }
+    getSerie(){
+        return this.serie;
+    }
+
+    setTurma(newTurma){
+        this.turma = newTurma;
+    }
+    getTurma(){
+        return this.turma;
     }
 
 }

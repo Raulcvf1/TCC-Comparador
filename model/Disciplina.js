@@ -71,6 +71,102 @@ module.exports = class Disciplina {
     return operacaoAssincrona;
   }
 
+  async read_percentual_atividade() {
+    const operacaoAssincrona = new Promise((resolve, reject) => {
+      const atividade = this.getAtividade();
+      const idAtividade = atividade.idAtividade;
+
+      let params = [idAtividade];
+      
+      let SQL =`SELECT 
+                    ROUND((SUM(CASE WHEN e.nota = 10 THEN 1 ELSE 0 END) / COUNT(*)) * 100, 2) AS taxa_acertos,
+                    ROUND((SUM(CASE WHEN e.nota = 0 THEN 1 ELSE 0 END) / COUNT(*)) * 100, 2) AS taxa_erros
+                FROM 
+                    colegiosUnivap.Entrega e
+                INNER JOIN 
+                    colegiosUnivap.Questao q ON e.Questao_idQuestao = q.idQuestao
+                WHERE 
+                    q.Atividade_idAtividade = ?;`;
+
+      this.banco.query(SQL, params, function (error, result) {
+        if (error) {
+          console.log(error);
+          reject(error);
+        } else {
+          resolve(result);
+        }
+      });
+    });
+    return operacaoAssincrona;
+  }
+
+  async read_percentual_atividade_questao() {
+    const operacaoAssincrona = new Promise((resolve, reject) => {
+      const atividade = this.getAtividade();
+      const idAtividade = atividade.idAtividade;
+
+      let params = [idAtividade];
+      
+      let SQL =`SELECT 
+                    q.idQuestao,
+                    q.nome AS nome_questao,
+                    ROUND((SUM(CASE WHEN e.nota = 10 THEN 1 ELSE 0 END) / COUNT(*)) * 100, 2) AS taxa_acertos,
+                    ROUND((SUM(CASE WHEN e.nota = 0 THEN 1 ELSE 0 END) / COUNT(*)) * 100, 2) AS taxa_erros
+                FROM 
+                    colegiosUnivap.Entrega e
+                INNER JOIN 
+                    colegiosUnivap.Questao q ON e.Questao_idQuestao = q.idQuestao
+                WHERE 
+                    q.Atividade_idAtividade = ?
+                GROUP BY 
+                    q.idQuestao, q.nome;`;
+
+      this.banco.query(SQL, params, function (error, result) {
+        if (error) {
+          console.log(error);
+          reject(error);
+        } else {
+          resolve(result);
+        }
+      });
+    });
+    return operacaoAssincrona;
+  }
+
+  async read_percentual_atividade_disciplina() {
+    const operacaoAssincrona = new Promise((resolve, reject) => {
+      const idDisciplina = this.getIdDisciplina();
+
+      let params = [idDisciplina];
+      
+      let SQL =`SELECT 
+                    a.idAtividade,
+                    a.nome AS nome_atividade,
+                    ROUND((SUM(CASE WHEN e.nota = 10 THEN 1 ELSE 0 END) / COUNT(*)) * 100, 2) AS media_acertos,
+                    ROUND((SUM(CASE WHEN e.nota = 0 THEN 1 ELSE 0 END) / COUNT(*)) * 100, 2) AS media_erros
+                FROM 
+                    colegiosUnivap.Atividade a
+                INNER JOIN 
+                    colegiosUnivap.Questao q ON a.idAtividade = q.Atividade_idAtividade
+                INNER JOIN 
+                    colegiosUnivap.Entrega e ON q.idQuestao = e.Questao_idQuestao
+                WHERE 
+                    a.Disciplina_idDisciplina = ?
+                GROUP BY 
+                    a.idAtividade, a.nome;`;
+
+      this.banco.query(SQL, params, function (error, result) {
+        if (error) {
+          console.log(error);
+          reject(error);
+        } else {
+          resolve(result);
+        }
+      });
+    });
+    return operacaoAssincrona;
+  }
+
   async readCodeUnicoDisciplina() {
     const operacaoAssincrona = new Promise((resolve, reject) => {
       const code = this.getCode();
@@ -283,6 +379,59 @@ module.exports = class Disciplina {
     return operacaoAssincrona;
   }
 
+  async readNota_exportarExcel() {
+    const operacaoAssincrona = new Promise((resolve, reject) => {
+        const atividade = this.getAtividade();
+        const idAtividade = atividade.idAtividade;
+
+        if (!idAtividade || idAtividade.length === 0) {
+            reject(new Error("idAtividade não pode ser vazio"));
+            return;
+        }
+
+        // Gerando a quantidade correta de placeholders com base no tamanho de idAtividade
+        const placeholders = new Array(idAtividade.length).fill('?').join(',');
+
+        // SQL ajustado para considerar todas as questões e calcular corretamente as notas
+        let SQL = `
+            SELECT
+                a.matricula,
+                a.nome AS nome_aluno,
+                a.serie,
+                a.turma,
+                ROUND(AVG(COALESCE(e.nota, 0)), 2) AS media_nota_atividades
+            FROM
+                Aluno a
+            JOIN
+                Aluno_Disciplina ad ON a.matricula = ad.Aluno_matricula
+            JOIN
+                Disciplina d ON ad.Disciplina_idDisciplina = d.idDisciplina
+            LEFT JOIN
+                Questao q ON q.Atividade_idAtividade IN (${placeholders})
+            LEFT JOIN
+                Entrega e ON a.matricula = e.Aluno_matricula AND q.idQuestao = e.Questao_idQuestao
+            WHERE
+                q.Atividade_idAtividade IN (${placeholders})
+            GROUP BY
+                a.matricula, a.nome, a.serie, a.turma;
+        `;
+
+        // Concatenando os IDs duas vezes para substituir ambos os placeholders
+        const params = [...idAtividade, ...idAtividade];
+
+        this.banco.query(SQL, params, function (error, result) {
+            if (error) {
+                console.log(error);
+                reject(error);
+            } else {
+                resolve(result);
+            }
+        });
+    });
+
+    return operacaoAssincrona;
+  }
+
 
   async update() {
     const operacaoAssincrona = new Promise((resolve, reject) => {
@@ -346,7 +495,7 @@ module.exports = class Disciplina {
 
   // Função para gerar um código único
   async generateUniqueCode() {
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    const characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
     const length = 8;
     let code = '';
 

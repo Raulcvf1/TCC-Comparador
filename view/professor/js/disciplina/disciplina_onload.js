@@ -77,13 +77,23 @@ window.onload = function() {
     // Função para popular a comboBoxAtividade com os valores retornados
     function populateComboBoxAtividade(atividades) {
         const comboBoxAtividade = document.getElementById("comboBoxAtividade");
-        comboBoxAtividade.innerHTML = '<option selected value="null">Selecione a Atividade</option>'; // Limpa e define a opção padrão
+        comboBoxAtividade.innerHTML = '<option selected value="false">Selecione a Atividade</option>'; // Limpa e define a opção padrão
 
         atividades.forEach(atividade => {
             const option = document.createElement("option");
             option.value = atividade.idAtividade; // O value será o id da atividade
             option.textContent = atividade.nome; // O texto será o nome da atividade
             comboBoxAtividade.appendChild(option);
+        });
+
+        const comboBoxAtividade_grafico = document.getElementById("comboBoxAtividade_grafico");
+        comboBoxAtividade_grafico.innerHTML = '<option selected value="false">Selecione a Atividade</option>'; // Limpa e define a opção padrão
+
+        atividades.forEach(atividade => {
+            const option = document.createElement("option");
+            option.value = atividade.idAtividade; // O value será o id da atividade
+            option.textContent = atividade.nome; // O texto será o nome da atividade
+            comboBoxAtividade_grafico.appendChild(option);
         });
     }
 

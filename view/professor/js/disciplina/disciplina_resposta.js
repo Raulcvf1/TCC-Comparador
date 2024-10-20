@@ -21,9 +21,7 @@ function btnResposta_onclick() {
 }
 
 function fetch_get_notaAluno(matricula, idAtividade, idDisciplina) {
-    const uri = idAtividade
-        ? `/disciplina/nota/${matricula}/${idAtividade}/${idDisciplina}`
-        : `/disciplina/nota/${matricula}/null/${idDisciplina}`;
+    const uri = `/disciplina/nota/${matricula}/${idAtividade}/${idDisciplina}`
 
     const token = localStorage.getItem("token");
 
@@ -42,9 +40,11 @@ function fetch_get_notaAluno(matricula, idAtividade, idDisciplina) {
 
         if (objetoJson.status === true) {
             // Verifica se o idAtividade foi informado (não é vazio ou null)
-            const idAtividadeInformado = !!idAtividade;
+            let existe = false;
+            if (idAtividade != "false"){existe = true}
+
             // Chama a função para gerar a tabela com base nos dados e a flag
-            gerarTabelaNotas(objetoJson.dados, idAtividadeInformado);
+            gerarTabelaNotas(objetoJson.dados, existe);
         } else {
             console.log(objetoJson.msg);
         }

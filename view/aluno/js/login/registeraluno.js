@@ -6,7 +6,9 @@ const txtEmailRegister = document.getElementById("txtEmailRegisterAluno");
 const txtMatriculaRegister = document.getElementById("txtMatriculaRegisterAluno");
 const txtCpfRegister = document.getElementById("txtCpfRegisterAluno");
 const txtSenhaRegister = document.getElementById("txtSenhaRegisterAluno");
-
+const comboBoxSerie = document.getElementById("comboBoxSerie");
+const comboBoxTurma = document.getElementById("comboBoxTurma");
+ 
 // Vincula a função onclick_btnRegister() ao click do botão de registro
 btnRegister.onclick = onclick_btnRegister;
 
@@ -20,6 +22,8 @@ function onclick_btnRegister(event) {
   const v_nome = txtNomeRegister.value;
   const v_email = txtEmailRegister.value;
   const v_senha = txtSenhaRegister.value;
+  const v_serie = comboBoxSerie.value;
+  const v_turma = comboBoxTurma.value;
 
   // Função para validar CPF
   function validarCPF(cpf) {
@@ -69,6 +73,8 @@ function onclick_btnRegister(event) {
     nome: v_nome,
     email: v_email,
     senha: v_senha,
+    serie: v_serie,
+    turma: v_turma
   };
 
   // Chama a função que enviará os dados para a API que verificará o login

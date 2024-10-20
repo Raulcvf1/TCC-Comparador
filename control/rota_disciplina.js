@@ -505,6 +505,185 @@ module.exports = function (app, banco) {
         }
 
     });
+
+    /*
+    GET PERCENTUAL GERAL DA ATIVIDADE
+    */
+    app.get("/disciplina/percentual/atividade/:idAtividade", (request, response) => {
+
+        const jwt = new JwtToken();
+        const token = request.headers.authorization;
+        const tokenValido = jwt.validarToken(token);
+
+        if (tokenValido.status == true) {
+
+            const disciplina = new Disciplina(banco);
+
+            const idAtividade = request.params.idAtividade;
+
+            const atividade = new Atividade(banco);
+            atividade.setIdAtividade(idAtividade);
+
+            disciplina.setAtividade(atividade);
+
+            disciplina.read_percentual_atividade()
+            .then((resultadosBanco) => {
+                const resposta = {
+                status: true,
+                msg: "executado com sucesso",
+                dados: resultadosBanco,
+                };
+                response.status(200).send(resposta);
+            })
+            .catch((erro) => {
+                const resposta = {
+                status: false,
+                msg: "erro ao executar",
+                codigo: "005",
+                dados: erro,
+                };
+                response.status(200).send(resposta);
+            });
+
+        }else{
+            return response.status(401).json({ message: "Token inválido ou não fornecido" });
+        }
+
+    });
+
+    /*
+    GET PERCENTUAL GERAL DA ATIVIDADE POR QUESTAO
+    */
+    app.get("/disciplina/percentual/questao/:idAtividade", (request, response) => {
+
+        const jwt = new JwtToken();
+        const token = request.headers.authorization;
+        const tokenValido = jwt.validarToken(token);
+
+        if (tokenValido.status == true) {
+
+            const disciplina = new Disciplina(banco);
+
+            const idAtividade = request.params.idAtividade;
+
+            const atividade = new Atividade(banco);
+            atividade.setIdAtividade(idAtividade);
+
+            disciplina.setAtividade(atividade);
+
+            disciplina.read_percentual_atividade_questao()
+            .then((resultadosBanco) => {
+                const resposta = {
+                status: true,
+                msg: "executado com sucesso",
+                dados: resultadosBanco,
+                };
+                response.status(200).send(resposta);
+            })
+            .catch((erro) => {
+                const resposta = {
+                status: false,
+                msg: "erro ao executar",
+                codigo: "005",
+                dados: erro,
+                };
+                response.status(200).send(resposta);
+            });
+
+        }else{
+            return response.status(401).json({ message: "Token inválido ou não fornecido" });
+        }
+
+    });
+
+        /*
+    GET PERCENTUAL GERAL DA ATIVIDADE POR QUESTAO
+    */
+    app.get("/disciplina/percentual/:idDisciplina", (request, response) => {
+
+        const jwt = new JwtToken();
+        const token = request.headers.authorization;
+        const tokenValido = jwt.validarToken(token);
+
+        if (tokenValido.status == true) {
+
+            const disciplina = new Disciplina(banco);
+
+            const idDisciplina = request.params.idDisciplina;
+
+            disciplina.setIdDisciplina(idDisciplina);
+
+            disciplina.read_percentual_atividade_disciplina()
+            .then((resultadosBanco) => {
+                const resposta = {
+                status: true,
+                msg: "executado com sucesso",
+                dados: resultadosBanco,
+                };
+                response.status(200).send(resposta);
+            })
+            .catch((erro) => {
+                const resposta = {
+                status: false,
+                msg: "erro ao executar",
+                codigo: "005",
+                dados: erro,
+                };
+                response.status(200).send(resposta);
+            });
+
+        }else{
+            return response.status(401).json({ message: "Token inválido ou não fornecido" });
+        }
+
+    });
+
+    /*
+    GET DADOS PLANILHA
+    */
+    app.get("/disciplina/planilha/:idAtividade", (request, response) => {
+
+        const jwt = new JwtToken();
+        const token = request.headers.authorization;
+        const tokenValido = jwt.validarToken(token);
+    
+        if (tokenValido.status == true) {
+    
+            // Convertendo os IDs de atividades para um array
+            const idAtividade = request.params.idAtividade.split(',');
+    
+            const disciplina = new Disciplina(banco);
+            const atividade = new Atividade(banco);
+    
+            // Passando o array para o setIdAtividade
+            atividade.setIdAtividade(idAtividade);
+    
+            disciplina.setAtividade(atividade);
+    
+            disciplina.readNota_exportarExcel()
+            .then((resultadosBanco) => {
+                const resposta = {
+                    status: true,
+                    msg: "executado com sucesso",
+                    dados: resultadosBanco,
+                };
+                response.status(200).send(resposta);
+            })
+            .catch((erro) => {
+                const resposta = {
+                    status: false,
+                    msg: "erro ao executar",
+                    codigo: "005",
+                    dados: erro,
+                };
+                response.status(200).send(resposta);
+            });
+    
+        } else {
+            return response.status(401).json({ message: "Token inválido ou não fornecido" });
+        }
+    
+    });    
     
     /*
     update
