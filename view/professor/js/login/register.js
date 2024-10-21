@@ -72,7 +72,7 @@ function fetch_post_createProfessor(objJson) {
         localStorage.setItem("jsonProfessor", stringJsonProfessor);
 
         //redireciona para a pagina Painel.html
-        window.location = "home.html";
+        window.location = "login.html";
       } else {
         //caso o status da resposta não sseja true
         //escreve a mensagem que veio da api

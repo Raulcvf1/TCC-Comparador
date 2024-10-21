@@ -21,19 +21,19 @@ module.exports = class Comparador {
                 };
             case 'python':
                 return {
-                    executeCommand: `python3 "${this.pathQuestao}" < "${this.pathEntrada}" > "${this.output}"`
+                    executeCommand: `python "${this.pathQuestao}" < "${this.pathEntrada}" > "${this.output}"`
                 };
             case 'c':
                 const exeFileCpp = this.pathQuestao.replace('.cpp', '');
                 return {
                     compileCommand: `g++ "${this.pathQuestao}" -o "${exeFileCpp}"`,
-                    executeCommand: `./"${exeFileCpp}" < "${this.pathEntrada}" > "${this.output}"`
+                    executeCommand: `"${exeFileCpp}" < "${this.pathEntrada}" > "${this.output}"`
                 };
             case 'java':
                 const className = this.pathQuestao.replace('.java', '');
                 return {
                     compileCommand: `javac "${this.pathQuestao}"`,
-                    executeCommand: `java -cp "${path.dirname(this.pathQuestao)}" ${className.split('/').pop()} < "${this.pathEntrada}" > "${this.output}"`
+                    executeCommand: `java -cp "${this.pathQuestao.substring(0, this.pathQuestao.lastIndexOf('\\'))}" ${className.split('\\').pop()} < "${this.pathEntrada}" > "${this.output}"`
                 };
             default:
                 throw new Error(`Unsupported language: ${this.language}`);

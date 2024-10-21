@@ -112,6 +112,9 @@ function processNotaResponse(dados) {
 
         } else if (nota === 0) {
             updateTable("table-danger", "Nota: 0", "Exercício incorreto");
+
+            codigoEnviado(dados.path_entrega);
+
         } else {
             resetTable();
         }

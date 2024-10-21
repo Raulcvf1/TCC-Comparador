@@ -120,7 +120,7 @@ function fetch_post_createAluno(objJson) {
         localStorage.setItem("jsonAluno", stringJsonAluno);
 
         // Redireciona para a página index.html
-        window.location = "home.html";
+        window.location = "login.html";
       } else {
         // Caso o status da resposta não seja true
         // Escreve a mensagem que veio da API

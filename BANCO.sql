@@ -20,6 +20,8 @@ CREATE TABLE IF NOT EXISTS `colegiosUnivap`.`Aluno` (
   `nome` VARCHAR(128) NOT NULL,
   `email` VARCHAR(128) NOT NULL,
   `senha` VARCHAR(128) NOT NULL,
+  `serie` INT(11) NOT NULL,
+  `turma` VARCHAR(8) NOT NULL,
   PRIMARY KEY (`matricula`),
   UNIQUE INDEX `matricula_UNIQUE` (`matricula` ASC))
 ENGINE = InnoDB;
@@ -118,7 +120,6 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `colegiosUnivap`.`Entrada` (
   `idEntrada` INT(10) NOT NULL AUTO_INCREMENT,
-  `nome` VARCHAR(128) NOT NULL,
   `path_entrada` VARCHAR(255) NOT NULL,
   `Questao_idQuestao` INT(10) NOT NULL,
   PRIMARY KEY (`idEntrada`), 
@@ -137,13 +138,13 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `colegiosUnivap`.`Entrega` (
   `idEntrega` INT(10) NOT NULL AUTO_INCREMENT,
-  `nota` DECIMAL(5,2) NOT NULL,
+  `nota` DECIMAL(5,2) NULL,
   `path_entrega` VARCHAR(255) NOT NULL,
   `caixa` VARCHAR(128) NOT NULL,
-    `Questao_idQuestao` INT(10) NOT NULL, 
+  `Questao_idQuestao` INT(10) NOT NULL, 
   `Aluno_matricula` INT(10) NOT NULL,
   PRIMARY KEY (`idEntrega`),
-  UNIQUE INDEX `unique_Aluno_Questao` (`Aluno_matricula`, `Questao_idQuestao`), 
+  UNIQUE INDEX `unique_Entrega` (`Questao_idQuestao`, `Aluno_matricula`),
   INDEX `fk_Entrega_Questao_idx` (`Questao_idQuestao` ASC), 
   INDEX `fk_Entrega_Aluno_idx` (`Aluno_matricula` ASC),
   CONSTRAINT `fk_Entrega_Questao`
