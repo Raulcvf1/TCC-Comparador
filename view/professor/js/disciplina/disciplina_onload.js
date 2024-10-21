@@ -95,6 +95,22 @@ window.onload = function() {
             option.textContent = atividade.nome; // O texto será o nome da atividade
             comboBoxAtividade_grafico.appendChild(option);
         });
+
+        const checkBoxArea = document.getElementById("checkBoxArea");
+
+        atividades.forEach(atividade => {
+            checkBoxArea.innerHTML += `
+                <div class="col">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="${atividade.idAtividade}" >
+                        <label class="form-check-label" for="flexCheckDefault">
+                            ${atividade.nome}
+                        </label>
+                    </div>
+                </div>
+            `;
+        });        
+
     }
 
     // Função para criar os jumbotrons das atividades

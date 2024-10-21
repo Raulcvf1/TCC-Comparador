@@ -23,13 +23,7 @@ module.exports = function (app, banco) {
                 // Retorna o conteúdo do arquivo
                 response.status(200).send(conteudo);
             } catch (error) {
-                if (error.code === 'ENOENT') {
-                    console.log(`${path} não existe.`);
-                    response.status(404).send("Caminho não encontrado.");
-                } else {
-                    console.error(`Erro ao tentar ler o arquivo ${path}:`, error);
-                    response.status(500).send("Erro ao tentar ler o arquivo.");
-                }
+                response.status(500).send("Erro ao tentar ler o arquivo.");
             }
         } else {
             return response.status(401).json({ message: "Token inválido ou não fornecido" });

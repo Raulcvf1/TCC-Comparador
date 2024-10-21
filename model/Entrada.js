@@ -94,6 +94,7 @@ module.exports = class Entrada {
     async delete() {
       const operacaoAssincrona = new Promise((resolve, reject) => {
         const id = this.getIdEntrada();
+
         let params = [id];
   
         let sql = "DELETE FROM colegiosunivap.entrada WHERE idEntrada = ?;";
@@ -110,7 +111,7 @@ module.exports = class Entrada {
     }
   
     setIdEntrada(newIdEntrada) {
-      this.idQuestao = newIdEntrada;
+      this.idEntrada = newIdEntrada;
     }
     getIdEntrada() {
       return this.idEntrada;

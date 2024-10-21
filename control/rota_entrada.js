@@ -8,9 +8,6 @@ module.exports = function (app, banco) {
 
     const Questao = require("../model/Questao");
 
-    const fs = require('fs');
-    const path = require('path');
-
     //no bloco de codigo do professor/insert como posso testar o jwttoken do usuario vindo do bearer
 
     /*
@@ -225,13 +222,6 @@ module.exports = function (app, banco) {
 
             entrada.setQuestao(questao);
 
-            // isso memo, ai agr to quase acabando a area do back-end
-            // ss do prof
-            // ai vou pro front e ja faco aqle bglh d rodar simulacao
-            //muitooo suave
-            //sim ta mtoo diboa agr
-            // entt so tem q fazer tlg SKAKSAK
-
             entrada.update().then((resultadosBanco) => {
 
                 const resposta = {
@@ -257,19 +247,18 @@ module.exports = function (app, banco) {
     /*
     delete
     */
-    app.delete("/entrada/:id", (request, response) => {
+    app.delete("/entrada/:idEntrada", (request, response) => {
 
         const jwt = new JwtToken();
         const token = request.headers.authorization;
         const tokenValido = jwt.validarToken(token);
 
         if (tokenValido.status == true) {
-
-            const id = request.params.id;
+            const idEntrada = request.params.idEntrada;
 
             const entrada = new Entrada(banco);
 
-            entrada.setIdEntrada(id);
+            entrada.setIdEntrada(idEntrada);
 
             entrada.delete().then((resultadosBanco) => {
 

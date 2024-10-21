@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="../css/nav.css">
     <link rel="stylesheet" href="../css/search.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
 </head>
 
 <body class="body-style">
@@ -41,13 +41,6 @@
                     <path d="M.54 3.87.5 3a2 2 0 0 1 2-2h3.672a2 2 0 0 1 1.414.586l.828.828A2 2 0 0 0 9.828 3h3.982a2 2 0 0 1 1.992 2.181l-.637 7A2 2 0 0 1 13.174 14H2.826a2 2 0 0 1-1.991-1.819l-.637-7a2 2 0 0 1 .342-1.31zM2.19 4a1 1 0 0 0-.996 1.09l.637 7a1 1 0 0 0 .995.91h10.348a1 1 0 0 0 .995-.91l.637-7A1 1 0 0 0 13.81 4zm4.69-1.707A1 1 0 0 0 6.172 2H2.5a1 1 0 0 0-1 .981l.006.139q.323-.119.684-.12h5.396z"/>
                 </svg>
                 <span class="hidden-style">Disciplina</span>
-            </a>
-            <a class="link-style" style="color: white; text-decoration: none;" href="atividade.html" data-bs-toggle="atividade" title="Acessar Atividade">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-file-earmark-check" viewBox="0 0 16 16">
-                    <path d="M10.854 7.854a.5.5 0 0 0-.708-.708L7.5 9.793 6.354 8.646a.5.5 0 1 0-.708.708l1.5 1.5a.5.5 0 0 0 .708 0z"/>
-                    <path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2M9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5z"/>
-                </svg>
-                <span class="hidden-style">Atividade</span>
             </a>
         </div>
 
@@ -156,7 +149,7 @@
                     <div class="container">
                         <div class="row justify-content-end align-items-center">
                             <div class="col-auto">
-                                <button type="button" class="btn btn-success" data-bs-toggle="excel" title="Exportar Excel" id="btnPlanilha">
+                                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalPlanilha" data-bs-toggle="excel" title="Exportar Excel" id="btnPlanilha">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-table" viewBox="0 0 16 16">
                                         <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm15 2h-4v3h4zm0 4h-4v3h4zm0 4h-4v3h3a1 1 0 0 0 1-1zm-5 3v-3H6v3zm-5 0v-3H1v2a1 1 0 0 0 1 1zm-4-4h4V8H1zm0-4h4V4H1zm5-3v3h4V4zm4 4H6v3h4z"/>
                                     </svg>
@@ -209,6 +202,29 @@
             </div>
         </div>
         <br>
+    </div>
+
+    <!-- MODAL EXPORTAR PLANILHA -->
+    <div class="modal fade text-dark" id="modalPlanilha" tabindex="-1" aria-labelledby="modalPlanilha" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Percentual em relação às Atividades e Questões</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row" id="checkBoxArea" style="font-size: 20px;">
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col">
+                            <div class="btn-group d-flex w-100">
+                                <button type="button" class="btn btn-primary w-100" id="btnExportar">Exportar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- MODAL VISUALIZAR GRAFICOS -->

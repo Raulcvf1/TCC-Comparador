@@ -8,7 +8,6 @@ module.exports = class Professor {
     this.nome = null;
     this.email = null;
     this.senha = null;
-    this.path_foto = null;
   }
 
   async create() {
@@ -16,23 +15,34 @@ module.exports = class Professor {
       const nome = this.getNome();
       const email = this.getEmail();
       const senha = md5(this.getSenha());
-
+  
       const params = [nome, email, senha];
-
-      let sql =
-        "INSERT INTO professor (nome, email, senha) VALUES (?, ?, ?);";
-
-      this.banco.query(sql, params, function (error, result) {
+  
+      // Verifica se o email já existe
+      const sqlVerificacao = "SELECT COUNT(*) AS qtd FROM professor WHERE email = ?;";
+      this.banco.query(sqlVerificacao, [email], (error, result) => {
         if (error) {
           reject(error);
         } else {
-          resolve(result);
+          if (result[0].qtd > 0) {
+            // Email já está cadastrado
+            reject(new Error("O email já está cadastrado."));
+          } else {
+            // Se o email não existir, faz a inserção
+            const sql = "INSERT INTO professor (nome, email, senha) VALUES (?, ?, ?);";
+            this.banco.query(sql, params, function (error, result) {
+              if (error) {
+                reject(error);
+              } else {
+                resolve(result);
+              }
+            });
+          }
         }
       });
     });
     return operacaoAssincrona;
-  }
-
+  }  
 
   async read() {
     const operacaoAssincrona = new Promise((resolve, reject) => {
@@ -59,37 +69,16 @@ module.exports = class Professor {
     return operacaoAssincrona;
   }
 
-  async readPahtFoto() {
-    const operacaoAssincrona = new Promise((resolve, reject) => {
-      const registro = this.getRegistro();
-      let params = [registro];
-
-      let SQL = "SELECT path_foto FROM colegiosunivap.professor WHERE registro = ?;";
-
-      this.banco.query(SQL, params, function (error, result) {
-        if (error) {
-          console.log(error);
-          reject(error);
-        } else {
-          resolve(result);
-        }
-      });
-    });
-    return operacaoAssincrona;
-  }
-
-
   async update() {
     const operacaoAssincrona = new Promise((resolve, reject) => {
       const registro = this.getRegistro();
       const nome = this.getNome();
       const email = this.getEmail();
       const senha = md5(this.getSenha());
-      const path = this.getPath();
 
-      let parametros = [nome, email, senha, path, registro];
+      let parametros = [nome, email, senha, registro];
       let sql =
-        "update professor set nome=? ,email=? ,senha=?, path_foto = ? where registro = ?;";
+        "update professor set nome=?, email=?, senha=? where registro = ?;";
       this.banco.query(sql, parametros, function (error, result) {
         if (error) {
           reject(error);
@@ -100,7 +89,6 @@ module.exports = class Professor {
     });
     return operacaoAssincrona;
   }
-
 
   async delete() {
     const operacaoAssincrona = new Promise((resolve, reject) => {
@@ -117,7 +105,6 @@ module.exports = class Professor {
     });
     return operacaoAssincrona;
   }
-
   
   async login() {
     const operacaoAssincrona = new Promise((resolve, reject) => {
@@ -157,12 +144,14 @@ module.exports = class Professor {
   getRegistro() {
     return this.registro;
   }
+
   setNome(name) {
     this.nome = name;
   }
   getNome() {
     return this.nome;
   }
+
   setEmail(email) {
     this.email = email;
   }
@@ -175,11 +164,5 @@ module.exports = class Professor {
   }
   getSenha() {
     return this.senha;
-  }
-  setPath(newPath){
-    this.path_foto = newPath;
-  }
-  getPath(){
-    return this.path;
   }
 };

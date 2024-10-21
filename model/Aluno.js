@@ -15,28 +15,42 @@ module.exports = class Aluno {
 
     async create() {
         const operacaoAssincrona = new Promise((resolve, reject) => {
-            const matricula = this.getMatricula();
-            const cpf = this.getCpf();
-            const nome = this.getNome();
-            const email = this.getEmail();
-            const senha = md5(this.getSenha());
-            const serie = this.getSerie();
-            const turma = this.getTurma();
-
-            const params = [matricula, cpf, nome, email, senha, serie, turma];
-
-            let sql = "INSERT INTO aluno (matricula, cpf, nome, email, senha, serie, turma) VALUES (?, ?, ?, ?, ?, ?, ?);";
-
-            this.banco.query(sql, params, function (error, result) {
-                if (error) {
+          const matricula = this.getMatricula();
+          const cpf = this.getCpf();
+          const nome = this.getNome();
+          const email = this.getEmail();
+          const senha = md5(this.getSenha());
+          const serie = this.getSerie();
+          const turma = this.getTurma();
+      
+          const params = [matricula, cpf, nome, email, senha, serie, turma];
+      
+          // Verifica se o email já existe
+          const sqlVerificacao = "SELECT COUNT(*) AS qtd FROM aluno WHERE email = ?;";
+          this.banco.query(sqlVerificacao, [email], (error, result) => {
+            if (error) {
+              reject(error);
+            } else {
+              if (result[0].qtd > 0) {
+                // Email já está cadastrado
+                reject(new Error("O email já está cadastrado."));
+              } else {
+                // Se o email não existir, faz a inserção
+                const sql = "INSERT INTO aluno (matricula, cpf, nome, email, senha, serie, turma) VALUES (?, ?, ?, ?, ?, ?, ?);";
+                this.banco.query(sql, params, function (error, result) {
+                  if (error) {
                     reject(error);
-                } else {
+                  } else {
                     resolve(result);
-                }
-            });
+                  }
+                });
+              }
+            }
+          });
         });
         return operacaoAssincrona;
     }
+      
     async read() {
         const operacaoAssincrona = new Promise((resolve, reject) => {
 

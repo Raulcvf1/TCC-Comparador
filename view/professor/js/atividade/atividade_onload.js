@@ -183,7 +183,7 @@ function createEntradaListGroup(entrada, idDiv) {
     entrada.forEach(elemento => {
         const item = document.createElement('a');
         item.className = "list-group-item list-group-item-action";
-        item.textContent = "Input " + i;
+        item.textContent = "Entrada " + i;
         
         i++;
 

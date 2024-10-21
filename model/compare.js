@@ -27,13 +27,13 @@ function getExecutionCommands(file, inputs, output, language) {
             return { compileCommand, executeCommand };
         case 'python':
             return {
-                executeCommand: `python ${file} < ${inputs} > ${output}`
+                executeCommand: `python3 ${file} < ${inputs} > ${output}`
             };
         case 'c':
             const exeFileCpp = file.replace('.cpp', '');
             return {
                 compileCommand: `g++ ${file} -o ${exeFileCpp}`,
-                executeCommand: `${exeFileCpp} < ${inputs} > ${output}`
+                executeCommand: `./${exeFileCpp} < ${inputs} > ${output}`
             };
         case 'java':
             const classFile = file.replace('.java', '');

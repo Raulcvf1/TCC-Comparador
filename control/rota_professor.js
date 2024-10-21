@@ -293,7 +293,8 @@ module.exports = function (app, banco) {
             const nome = request.body.nome;
             const email = request.body.email;
             const senha = request.body.senha;
-            const path = request.body.path;
+
+            console.log(nome);
 
             const professor = new Professor(banco);
 
@@ -301,7 +302,6 @@ module.exports = function (app, banco) {
             professor.setNome(nome);
             professor.setEmail(email);
             professor.setSenha(senha);
-            professor.setPath(path);
 
             professor.update()
             .then((resultadosBanco) => {
@@ -313,7 +313,6 @@ module.exports = function (app, banco) {
                     registro: professor.getRegistro(),
                     nome: professor.getNome(),
                     email: professor.getEmail(),
-                    path_foto: professor.getPath()
                 },
                 };
                 response.status(200).send(resposta);
